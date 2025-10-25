@@ -79,7 +79,7 @@ class Tower:
             self.archer_level += 1
         self.archer_idle = self.archers[self.archer_level][0]
         self.archer_shoot = self.archers[self.archer_level][1]
-        self.shoot_cooldown_set -= 30
+        self.shoot_cooldown_set -= 35
         self.frame_speed_max -= 1
         self.arrow_delay -= 6
 
