@@ -40,7 +40,18 @@ frame_count = 0
 spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
-coins = 0
+coins = 1000
+
+enable_piercing = False
+
+
+def upgrade_tower():
+    tower.upgrade_tower()
+    # TODO: ALSO INREASE HEALTH & MAYBE HEAL RATE HERE
+
+def upgrade_arrow():
+    global enable_piercing
+    enable_piercing = True
 
 def collect_coin():
     global coins
@@ -69,7 +80,7 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             tower.start_shoot(pygame.mouse.get_pos())
-            shop.event(event, pygame.mouse.get_pos(), coins, remove_coins)
+            shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
@@ -101,8 +112,12 @@ while running:
 
         enemy.kill()
     
-    for arrow in collided_arrows:
-        arrow.kill()
+    if (not enable_piercing):
+        for arrow in collided_arrows:
+            arrow.kill()
+    else:
+        for arrow in tower.arrows:
+            arrow.check_range(screen)
 
     killing_enemies = pygame.sprite.spritecollide(tower, enemy_group, 0)
     for enemy in killing_enemies:
@@ -122,8 +137,6 @@ while running:
 
     elif get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random_percent_value:
         generate_enemy(enemy_type="knight_golden")
-
-        
 
         # if spawn_enemy_every_frame == 1:
         #     pass

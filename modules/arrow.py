@@ -5,7 +5,7 @@ from modules.utilities import *
 
 class Arrow(pygame.sprite.Sprite):
 
-    def __init__(self, group, position, goal):
+    def __init__(self, group, position, goal, delay):
         pygame.sprite.Sprite.__init__(self, group)
 
         # Load necessary images
@@ -14,7 +14,7 @@ class Arrow(pygame.sprite.Sprite):
         self.position = position
         self.rect.center = self.position
         self.goal = goal
-        self.delay = 6*8
+        self.delay = delay
 
         change_x = self.position[0] - goal[0]
         change_y = self.position[1] - goal[1]
@@ -56,4 +56,8 @@ class Arrow(pygame.sprite.Sprite):
             self.rect.center += self.velocity
             self.image = self.arrowImage
         
+    def check_range(self, screen : pygame.Surface):
+        # Is the arrow still on the screen?
+        if (not screen.get_rect().collidepoint(self.rect.center)):
+            self.kill() # If it isnt, destroy the arrow
         
