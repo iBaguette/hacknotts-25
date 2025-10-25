@@ -17,10 +17,10 @@ class GUI:
         #self.hp = 100 
         #self.coins = 0
         self.coinsImage = pygame.image.load(os.path.join("assets", "images", "coin1.png"))
-        self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides_Pressed.png"))
+        self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides.png"))
 
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
-        self.scaledButton = pygame.transform.scale(self.coinsImage, (100, 100))
+        self.scaledButton = pygame.transform.scale(self.buttonImg, (100, 100))
 
         self.rect = self.scaledCoin.get_rect()
         self.rect = self.scaledCoin.get_rect()
@@ -89,18 +89,20 @@ class GUI:
         #     y_offset += text_surface.get_height() + 5
 
 
-        # Comic Sans MS
+        # FPS info
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
             f"FPS: {int(self.clock.get_fps())}",
             True, 
             black)
         screen.blit(text_surface, ((10, screen.get_height() - 35)))
 
+        # Coins collected
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
             "Coins Collected: " + str(coins), 
             True, 
             gold)
-        screen.blit(text_surface, (((screen.get_width())-250, 40))) 
+        screen.blit(self.scaledButton, ((screen.get_width())-300, 40))
+        screen.blit(text_surface, (((screen.get_width())-240, 40))) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
@@ -115,7 +117,6 @@ class GUI:
 
 
         screen.blit(self.scaledCoin, new_Rect.topright)
-        screen.blit(self.scaledButton, new_Rect.topright)
 
         self.clock.tick(60)
 
