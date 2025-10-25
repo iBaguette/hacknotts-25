@@ -5,12 +5,16 @@ from modules.background import *
 from modules.shop import *
 from modules.tower import *
 from modules.coin import *
-from modules.enemy import *
 from modules.gui import *
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
+
+# Note: this import is here because the display has to be init'd before enemy is imported,
+# as enemy creates a dictionary using a function requiring opacity with a screen output
+from modules.enemy import *
+
 clock = pygame.time.Clock()
 running = True
 dt = 0
@@ -47,8 +51,13 @@ def remove_coins(value):
     if (coins >= value):
         coins -= value
 
-def generate_enemy():
-    new_enemy = Enemy(enemy_group)
+
+def generate_enemy(enemy_type = "goblin"):
+    """
+    Generate a goblin or knight
+    """
+    print(f"spawning {enemy_type}")
+    new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
     return new_enemy
 
 while running:
@@ -102,8 +111,19 @@ while running:
 
     # Should there be a new enemy generated?
     # TODO: make this faster and faster every time
-    if (frame_count % spawn_enemy_every_frame) == 0:
-        generate_enemy()
+    random_percent_value = randint(1, 10000)
+
+    # print(f"{random_percent_value} less than {get_enemy_type("goblin")["spawn_frame_chance_percent"]}")
+    if get_enemy_type("goblin")["spawn_frame_chance_per10k"] >= random_percent_value:
+        generate_enemy(enemy_type="goblin") if randint(1,6) < 5 else generate_enemy(enemy_type="goblin_fast")
+
+    elif get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= random_percent_value:
+        generate_enemy(enemy_type="knight_generic")
+
+    elif get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random_percent_value:
+        generate_enemy(enemy_type="knight_golden")
+
+        
 
         # if spawn_enemy_every_frame == 1:
         #     pass
