@@ -40,7 +40,6 @@ class Tower:
 
     def draw(self, screen):
 
-        #pygame.draw.rect(screen, "red", self.rect)
         screen.blit(self.tower, self.tower_position)
         if (not self.shooting):
             screen.blit(self.archer_idle[self.frame], self.archer_position)
@@ -60,6 +59,7 @@ class Tower:
                 if (self.shooting):
                     self.shooting = False
                     self.max_frame = len(self.archer_idle) - 1
+        #pygame.draw.rect(screen, "red", self.rect)
                     
 
     def update(self):
