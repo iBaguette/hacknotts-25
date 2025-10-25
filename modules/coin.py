@@ -3,7 +3,9 @@ import pygame, os, math
 from modules.utilities import *
 from modules.arrow import *
 
-applepay = pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3"))
+coins_cashin = pygame.mixer.Sound(os.path.join("assets", "sounds", "coins.mp3"))
+coins_cashin.set_volume(300)
+coins_cashin.play()
 
 class Coin(pygame.sprite.Sprite):
 
@@ -48,7 +50,7 @@ class Coin(pygame.sprite.Sprite):
             else:
                 self.end()
                 self.kill()
-                applepay.play()
+                coins_cashin.play()
 
             self.rect.center += self.velocity  
             self.speed += self.acceleration      
