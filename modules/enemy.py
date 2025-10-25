@@ -101,7 +101,7 @@ class Enemy(pygame.sprite.Sprite):
         """
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
-        pygame.draw.rect(self.screen, "red", self.hitbox)
+        #pygame.draw.rect(self.screen, "red", self.hitbox)
 
         centre_pos = pygame.Vector2(self.area.center)
 
