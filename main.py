@@ -25,8 +25,7 @@ background = Background(screen)
 tower = Tower(screen)
 gui = GUI(screen)
 
-enemySprite1 = pygame.sprite.Sprite()
-enemy1 = enemy.Enemy(enemySprite1)
+enemy_group = pygame.sprite.Group()
 
 while running:
     # poll for events
@@ -65,9 +64,8 @@ while running:
     tower.draw(screen)
 
     # Draw and Update Sprites Array
-    enemy1.draw()
-
-
+    # enemy_group.draw()
+    enemy_group.update()
 
     # flip() the display to put your work on screen
     pygame.display.flip()
