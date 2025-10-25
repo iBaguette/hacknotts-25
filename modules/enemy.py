@@ -59,7 +59,6 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, enemy_group)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
-        # self.vector = vector
         self.coord_position = generate_random_positon()
         self.id = enemy_counter
         radius = 20
@@ -67,6 +66,9 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.Surface((size, size), pygame.SRCALPHA)
         pygame.draw.circle(self.image, (255, 0, 0), (radius, radius), radius)
         self.rect = self.image.get_rect(center=self.coord_position)
+
+        # Health: is alive or is dead
+        # self.health = 1
 
         pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
