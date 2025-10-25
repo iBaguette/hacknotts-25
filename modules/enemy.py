@@ -88,6 +88,9 @@ class Enemy(pygame.sprite.Sprite):
         self.speed: float = 1.0
 
     def draw(self):
+        print("draw")
+        self.screen.blit(self.image, self.rect.center)
+
         self.frame_speed += 1
         if self.frame_speed == self.frame_speed_max:
             self.frame = (self.frame + 1) % (self.max_frame + 1)
@@ -118,6 +121,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center += velocity
 
         self.hitbox.center = self.rect.center
+
+        self.draw()
 
 
     def stop_moving(self):
