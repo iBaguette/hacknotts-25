@@ -1,7 +1,8 @@
 # Example file showing a circle moving on screen
-import pygame, os, time
+import pygame, os, time, random
 
 from modules.background import *
+from modules.shop import *
 from modules.tower import *
 from modules.coin import *
 from modules.enemy import *
@@ -28,6 +29,7 @@ pygame.display.set_icon(logo)
 background = Background(screen)
 tower = Tower(screen)
 gui = GUI(screen)
+shop = Shop()
 
 enemy_group = pygame.sprite.Group()
 frame_count = 0
@@ -39,6 +41,11 @@ coins = 0
 def collect_coin():
     global coins
     coins += 1
+
+def remove_coins(value):
+    global coins
+    if (coins >= value):
+        coins -= value
 
 def generate_enemy():
     new_enemy = Enemy(enemy_group)
@@ -53,6 +60,7 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             tower.start_shoot(pygame.mouse.get_pos())
+            shop.event(event, pygame.mouse.get_pos(), coins, remove_coins)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
@@ -79,7 +87,9 @@ while running:
     collided_arrows = pygame.sprite.groupcollide(tower.arrows, enemy_group, 0, 0)
 
     for enemy in collided_enemies:
-        Coin(coin_group, enemy.rect.center, screen, collect_coin)
+        if random.randint(0, 10) <= 3:
+            Coin(coin_group, enemy.rect.center, screen, collect_coin)
+
         enemy.kill()
     
     for arrow in collided_arrows:
@@ -109,6 +119,7 @@ while running:
     coin_group.draw(screen)
 
     # Text/GUI
+    shop.draw(screen)
     gui.draw(screen, coins)
 
     ## VERY IMPORTANT text
@@ -130,4 +141,4 @@ while running:
     # print("tick")
     frame_count += 1
 
-pygame.quit()   
+pygame.quit()
