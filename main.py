@@ -72,10 +72,10 @@ while running:
     if (frame_count % spawn_enemy_every_frame) == 0:
         generate_enemy()
 
-        if spawn_enemy_every_frame == 1:
-            pass
-        else:
-            spawn_enemy_every_frame -= 1
+        # if spawn_enemy_every_frame == 1:
+        #     pass
+        # else:
+        #     spawn_enemy_every_frame -= 1
 
     # Draw and Update Sprites Array
     
