@@ -3,6 +3,8 @@ import pygame, os
 
 from background import *
 
+import modules.enemy
+
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -28,6 +30,10 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
+
+    enemy1 = Enemy(1)
+
+    pygame.draw.circle(screen, "red", player_pos, 40)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
