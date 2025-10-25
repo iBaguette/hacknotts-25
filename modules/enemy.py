@@ -4,6 +4,7 @@ import pygame, math, os
 from random import randint, randrange
 
 from modules.utilities import sprite_sheet_slice
+from modules.enemy_types import *
 
 global enemy_counter
 enemy_counter: int = 0
@@ -53,7 +54,7 @@ class Enemy(pygame.sprite.Sprite):
     """
     A new enemy player that spawns randomly
     """
-    def __init__(self, enemy_group):
+    def __init__(self, enemy_group, enemy_type = "goblin"):
         global enemy_counter
         # print(f"Debug [enemy] : Creating enemy sprite with id {enemy_counter}")
         pygame.sprite.Sprite.__init__(self, enemy_group)
@@ -65,7 +66,7 @@ class Enemy(pygame.sprite.Sprite):
         self.health = 1
 
         # Load necessary images
-        self.goblin_torch_attack = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=6, vertical_cells=5)
+        self.goblin_torch_attack = get_enemy_type(enemy_type)["spritesheet"]
         self.frame = 0
         self.max_frame = len(self.goblin_torch_attack) - 1
         self.frame_speed = 0
@@ -83,7 +84,7 @@ class Enemy(pygame.sprite.Sprite):
 
         enemy_counter += 1
         
-        self.speed: float = 1.0
+        self.speed: float = get_enemy_type(enemy_type)["speed"]
 
     def draw(self):
         # print("draw")
