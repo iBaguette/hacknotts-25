@@ -3,7 +3,7 @@ import pygame, os
 
 from background import *
 
-import modules.enemy
+from modules import enemy
 
 # pygame setup
 pygame.init()
@@ -11,8 +11,10 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+pygame.font.init()
+my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 pygame.display.set_caption(title="Medieval Fantasy Tower Defense")
 
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
@@ -31,19 +33,28 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
 
-    enemy1 = Enemy(1)
-
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    enemySprite1 = pygame.sprite.Sprite()
+    enemy1 = enemy.Enemy(enemySprite1)
+    enemy1.draw()
+ 
+    pygame.draw.circle(screen, "green", centre_pos, 40)
 
     keys = pygame.key.get_pressed()
+
+    # -- Player cannot move!
     if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+        text_surface = my_font.render(
+            "This is a **tower defense**, there is no moving!", 
+            True, 
+            (0, 0, 0),
+            None)
+        screen.blit(text_surface, (((screen.get_width()/2)-200, (screen.get_height()/2)+50)))
+    # if keys[pygame.K_s]:
+    #     player_pos.y += 300 * dt
+    # if keys[pygame.K_a]:
+    #     player_pos.x -= 300 * dt
+    # if keys[pygame.K_d]:
+    #     player_pos.x += 300 * dt
 
     # Draw background
     background.draw(screen)
