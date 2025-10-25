@@ -62,6 +62,13 @@ class GUI:
             y_offset += text_surface.get_height() + 5
 
 
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30).render(
+            "Gold:", 
+            True, 
+            (0, 0, 0),
+            None)
+        screen.blit(text_surface, (((screen.get_width())-250, (screen.get_height()-100))))
+
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
 

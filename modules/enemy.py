@@ -59,7 +59,6 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, enemy_group)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
-        # self.vector = vector
         self.coord_position = generate_random_positon()
         self.id = enemy_counter
         radius = 20
@@ -68,10 +67,14 @@ class Enemy(pygame.sprite.Sprite):
         pygame.draw.circle(self.image, (255, 0, 0), (radius, radius), radius)
         self.rect = self.image.get_rect(center=self.coord_position)
 
+        # Health: is alive or is dead
+        # self.health = 1
+
         pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
         enemy_counter += 1
         
+        self.speed: float = 1.0
 
     def draw(self, surface):
         # print("Debug [enemy] : drawing enemy")
@@ -84,8 +87,6 @@ class Enemy(pygame.sprite.Sprite):
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
 
-        speed: float = 1.0
-
         centre_pos = pygame.Vector2(self.area.center)
 
         # direction vector from enemy to centre
@@ -93,10 +94,14 @@ class Enemy(pygame.sprite.Sprite):
         distance = direction.length()
 
         if distance > 0:
-            velocity = direction.normalize() * speed
+            velocity = direction.normalize() * self.speed
         else:
             velocity = pygame.Vector2(0, 0)
 
         # update float position, then update rect for rendering/collisions
         self.coord_position += velocity
         self.rect.center = (int(self.coord_position.x), int(self.coord_position.y))
+
+    def stop_moving(self):
+        self.speed = 0
+        

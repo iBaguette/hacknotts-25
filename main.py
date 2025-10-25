@@ -3,8 +3,8 @@ import pygame, os, time
 
 from modules.background import *
 from modules.tower import *
+from modules.enemy import *
 from modules.gui import *
-from modules import enemy
 
 # pygame setup
 pygame.init()
@@ -33,7 +33,7 @@ frame_count = 0
 spawn_enemy_every_frame: int = 100
 
 def generate_enemy():
-    new_enemy = enemy.Enemy(enemy_group)
+    new_enemy = Enemy(enemy_group)
     return new_enemy
 
 while running:
@@ -66,7 +66,21 @@ while running:
     tower.draw(screen)
     tower.update()
     
+    # Is there a collision between arrows and enemies?
+    collided_enemies = pygame.sprite.groupcollide(enemy_group, tower.arrows, 0, 0)
+    collided_arrows = pygame.sprite.groupcollide(tower.arrows, enemy_group, 0, 0)
+
+    for enemy in collided_enemies:
+        enemy.kill()
     
+    for arrow in collided_arrows:
+        arrow.kill()
+
+    killing_enemies = pygame.sprite.spritecollide(tower, enemy_group, 0)
+    for enemy in killing_enemies:
+        enemy.stop_moving()
+        # TODO: SOMETIMES TAKE DAMAGE TO TOWER WHILE THEY ARE HERE
+
     # Should there be a new enemy generated?
     # TODO: make this faster and faster every time
     if (frame_count % spawn_enemy_every_frame) == 0:

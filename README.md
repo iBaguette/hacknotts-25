@@ -32,3 +32,4 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 - Bombs
 - Blood effects on death/damage
 - Health boosts if arrow missed but targeted
+- Piercing arrows (an upgrade)?
