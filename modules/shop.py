@@ -87,24 +87,24 @@ class Shop:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if (self.castle_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 20 and self.castle_level < 3):
-                    remove_coins_function(20)
+                if (coins >= 10 and self.castle_level < 3):
+                    remove_coins_function(10)
                     self.castle_level += 1
                     self.castle_button_type = self.button_pressed
                     self.castle_button_timer = 20
                     upgrade_tower()
                     
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 20 and self.archer_level < 3):
-                    remove_coins_function(20)
+                if (coins >= 10 and self.archer_level < 3):
+                    remove_coins_function(10)
                     self.archer_level += 1
                     self.archer_button_type = self.button_pressed
                     self.archer_button_timer = 20
                     upgrade_archer()
 
             if (self.arrow_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 100 and self.arrow_level < 1):
-                    remove_coins_function(100)
+                if (coins >= 20 and self.arrow_level < 1):
+                    remove_coins_function(20)
                     self.arrow_level = 1
                     self.arrow_button_type = self.button_pressed
                     upgrade_arrow()

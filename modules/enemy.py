@@ -109,7 +109,6 @@ class Enemy(pygame.sprite.Sprite):
         direction = centre_pos - self.rect.center
         
         velocity = direction.normalize() * self.speed
-        print(direction, velocity, self.speed)
 
         # update float position, then update rects for rendering/collisions
         self.rect.center += velocity

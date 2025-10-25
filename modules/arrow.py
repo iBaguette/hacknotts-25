@@ -40,7 +40,6 @@ class Arrow(pygame.sprite.Sprite):
             screen.blit(self.image, self.rect)
 
     def update(self):
-        # print("aaaa", self.delay)
 
         direction = pygame.Vector2(self.goal) - self.position
         distance = direction.length()

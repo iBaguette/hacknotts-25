@@ -9,7 +9,7 @@ from modules.gui import *
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1280, 720)) # , pygame.FULLSCREEN)
 
 # Note: this import is here because the display has to be init'd before enemy is imported,
 # as enemy creates a dictionary using a function requiring opacity with a screen output
@@ -163,6 +163,9 @@ while running:
             (0, 0, 0),
             None)
         screen.blit(text_surface, (((screen.get_width()/2)-250, (screen.get_height()/2)-250)))
+
+    elif keys[pygame.K_ESCAPE]:
+        running = False
 
     # flip() the display to put your work on screen
     pygame.display.flip()
