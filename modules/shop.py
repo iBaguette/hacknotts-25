@@ -93,6 +93,7 @@ class Shop:
                     self.castle_button_type = self.button_pressed
                     self.castle_button_timer = 20
                     upgrade_tower()
+                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
                     
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
                 if (coins >= 10 and self.archer_level < 3):
@@ -101,6 +102,7 @@ class Shop:
                     self.archer_button_type = self.button_pressed
                     self.archer_button_timer = 20
                     upgrade_archer()
+                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
 
             if (self.arrow_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
                 if (coins >= 20 and self.arrow_level < 1):
@@ -108,3 +110,4 @@ class Shop:
                     self.arrow_level = 1
                     self.arrow_button_type = self.button_pressed
                     upgrade_arrow()
+                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()

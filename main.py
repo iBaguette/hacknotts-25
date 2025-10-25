@@ -9,7 +9,7 @@ from modules.gui import *
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720)) # , pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
 
 # Note: this import is here because the display has to be init'd before enemy is imported,
 # as enemy creates a dictionary using a function requiring opacity with a screen output
@@ -19,6 +19,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 pygame.font.init()
+pygame.mixer.init()
 my_font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30)
 
 centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
@@ -29,6 +30,7 @@ pygame.display.set_icon(logo)
 
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
+
 
 background = Background(screen)
 tower = Tower(screen)
@@ -126,16 +128,16 @@ while running:
 
     # Should there be a new enemy generated?
     # TODO: make this faster and faster every time
-    random_percent_value = randint(1, 10000)
+    # random_percent_value = randint(1, 10000)
 
     # print(f"{random_percent_value} less than {get_enemy_type("goblin")["spawn_frame_chance_percent"]}")
-    if get_enemy_type("goblin")["spawn_frame_chance_per10k"] >= random_percent_value:
+    if get_enemy_type("goblin")["spawn_frame_chance_per10k"] >= randint(1, 10000):
         generate_enemy(enemy_type="goblin") if randint(1,6) < 5 else generate_enemy(enemy_type="goblin_fast")
 
-    if get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= random_percent_value:
+    if get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= randint(1, 10000):
         generate_enemy(enemy_type="knight_generic")
 
-    if get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random_percent_value:
+    if get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= randint(1, 10000):
         generate_enemy(enemy_type="knight_golden")
 
         # if spawn_enemy_every_frame == 1:
