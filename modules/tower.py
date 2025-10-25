@@ -1,7 +1,7 @@
 import pygame, os, math
 
 from modules.utilities import *
-
+from modules.arrow import *
 
 class Tower:
 
@@ -29,6 +29,9 @@ class Tower:
         self.shooting = False
         self.archer_position = (screen.get_width() / 2 - (self.archer_idle[0].get_width() / 2),
                          screen.get_height() / 2 - (self.archer_idle[0].get_height() / 1.2))
+        self.archer_rect = self.archer_idle[0].get_rect()
+        self.archer_rect.topleft = self.archer_position
+        self.arrows = pygame.sprite.Group()
 
     def draw(self, screen):
 
@@ -38,6 +41,7 @@ class Tower:
         else:
             screen.blit(self.archer_shoot[self.frame], self.archer_position)
         
+        self.arrows.draw(screen)
 
         self.frame_speed += 1
         if self.frame_speed >= self.frame_speed_max:
@@ -50,12 +54,22 @@ class Tower:
                 if (self.shooting):
                     self.shooting = False
                     self.max_frame = len(self.archer_idle) - 1
+                    
 
+    def update(self):
+        self.arrows.update()
 
     def start_shoot(self, position):
         self.shooting = True
         self.max_frame = len(self.archer_shoot) - 1
         self.frame = 0
+        
+        Arrow(self.arrows, self.archer_rect.center, position)
+
+    
+
+        
+
 
         
 

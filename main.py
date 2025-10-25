@@ -36,13 +36,11 @@ while running:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            tower.start_shoot(pygame.mouse.get_pos)
+            tower.start_shoot(pygame.mouse.get_pos())
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
  
-    pygame.draw.circle(screen, "green", centre_pos, 40)
-
     keys = pygame.key.get_pressed()
 
     # -- Player cannot move!
@@ -66,7 +64,8 @@ while running:
 
     # Draw tower
     tower.draw(screen)
-
+    tower.update()
+    
     # Draw and Update Sprites Array
     enemy1.draw()
 
@@ -79,6 +78,5 @@ while running:
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     dt = clock.tick(60) / 1000
-    print("tick")
 
 pygame.quit()
