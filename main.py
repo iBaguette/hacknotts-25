@@ -21,6 +21,9 @@ pygame.display.set_caption(title="Medieval Fantasy Tower Defense")
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
+logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
+pygame.display.set_icon(logo)
+
 background = Background(screen)
 tower = Tower(screen)
 gui = GUI(screen)
@@ -78,4 +81,4 @@ while running:
     dt = clock.tick(60) / 1000
     print("tick")
 
-pygame.quit()
+pygame.quit()   
