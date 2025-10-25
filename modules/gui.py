@@ -13,16 +13,19 @@ class GUI:
 
         # Maybe variables for like
         # health orignally at 100 
-        # hp -- hit points
+        # hp -- hit points 
         #self.hp = 100 
         #self.coins = 0
+
+        # Initialising 
         self.coinsImage = pygame.image.load(os.path.join("assets", "images", "coin1.png"))
         self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides.png"))
+        self.healthImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Banners", "Carved_3Slides.png"))
+        self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
 
+        # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
-        self.scaledButton = pygame.transform.scale(self.buttonImg, (100, 100))
-
-        self.rect = self.scaledCoin.get_rect()
+        
         self.rect = self.scaledCoin.get_rect()
 
         self.rect.center = (50, 75)
@@ -30,6 +33,13 @@ class GUI:
         self.amplitude = 20
         self.speed = 3
         self.base_y = self.rect.centery
+
+        # properties of Health Bar
+        self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
+        self.scaledBar = pygame.transform.scale(self.healthBarImg, (308, 50))
+
+        # Health Bar
+        # self.rect = self.borderHealth.get_rect()
 
         # internal timer
         self.clock = pygame.time.Clock()
@@ -63,7 +73,7 @@ class GUI:
         black = (0, 0, 0)
         paragraph = (
             "The middle ages is a period running from 1066 to 1485 " 
-            "and many developments and well-documented history occurred during this time. " 
+            "and many developments and well-documented history occurred during this time. "     
         )
 
         paragraph2 = (
@@ -75,19 +85,6 @@ class GUI:
 
         paragraph_split(paragraph, 500, 0, 0, black, font)
         paragraph_split(paragraph2, 500, 0, 50, black, font)
-
-
-        # txtsurf = font.render(paragraph, True, black)
-        # screen.blit(txtsurf, (0,0))
-# z,(200 - txtsurf.get_width() // 2, 150 - txtsurf.get_height()
-        # senteneces = [s.strip() for s in paragraph.split('.') if s.strip()]
-
-        # y_offset = 10
-        # for sentence in senteneces:
-        #     text_surface = font.render(sentence + '.', True, white)
-        #     screen.blit(text_surface, (10, y_offset))
-        #     y_offset += text_surface.get_height() + 5
-
 
         # FPS info
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
@@ -115,8 +112,14 @@ class GUI:
         new_Rect.topright = (screen.get_width() - 100, 100)
         new_Rect.centery = self.base_y + offset 
 
-
         screen.blit(self.scaledCoin, new_Rect.topright)
+
+        imgWidth, imgHeight = self.scaledHealthBorder.get_size()
+        x = (screen.get_width() - imgWidth) // 2
+        y = (screen.get_height() - imgHeight) // 2
+
+        screen.blit(self.scaledHealthBorder, (x, y - 200))
+        screen.blit(self.scaledBar, (x, y - 200))
 
         self.clock.tick(60)
 
