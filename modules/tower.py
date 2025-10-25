@@ -32,6 +32,11 @@ class Tower:
         self.archer_rect = self.archer_idle[0].get_rect()
         self.archer_rect.topleft = self.archer_position
         self.arrows = pygame.sprite.Group()
+        self.rect : pygame.Rect = self.tower.get_rect()
+        self.rect = self.rect.inflate(-20, -150)
+        self.rect.topleft = self.tower_position
+        self.rect.centery += 90
+        self.rect.centerx += 10
 
     def draw(self, screen):
 
@@ -63,7 +68,7 @@ class Tower:
         self.shooting = True
         self.max_frame = len(self.archer_shoot) - 1
         self.frame = 0
-        
+
         Arrow(self.arrows, self.archer_rect.center, position)
 
     

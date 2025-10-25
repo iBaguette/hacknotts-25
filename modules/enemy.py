@@ -72,6 +72,7 @@ class Enemy(pygame.sprite.Sprite):
 
         enemy_counter += 1
         
+        self.speed: float = 1.0
 
     def draw(self, surface):
         # print("Debug [enemy] : drawing enemy")
@@ -84,8 +85,6 @@ class Enemy(pygame.sprite.Sprite):
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
 
-        speed: float = 1.0
-
         centre_pos = pygame.Vector2(self.area.center)
 
         # direction vector from enemy to centre
@@ -93,10 +92,14 @@ class Enemy(pygame.sprite.Sprite):
         distance = direction.length()
 
         if distance > 0:
-            velocity = direction.normalize() * speed
+            velocity = direction.normalize() * self.speed
         else:
             velocity = pygame.Vector2(0, 0)
 
         # update float position, then update rect for rendering/collisions
         self.coord_position += velocity
         self.rect.center = (int(self.coord_position.x), int(self.coord_position.y))
+
+    def stop_moving(self):
+        self.speed = 0
+        
