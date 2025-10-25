@@ -33,3 +33,4 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 - Blood effects on death/damage
 - Health boosts if arrow missed but targeted
 - Piercing arrows (an upgrade)?
+- Web leaderboard/api with coin records (Cloudflare K/V store?)
