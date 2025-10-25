@@ -4,7 +4,6 @@ import pygame, os, time, random
 from modules.background import *
 from modules.shop import *
 from modules.tower import *
-from modules.coin import *
 from modules.gui import *
 
 # pygame setup
@@ -14,6 +13,7 @@ screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
 # Note: this import is here because the display has to be init'd before enemy is imported,
 # as enemy creates a dictionary using a function requiring opacity with a screen output
 from modules.enemy import *
+from modules.coin import *
 
 clock = pygame.time.Clock()
 running = True
