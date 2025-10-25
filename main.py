@@ -32,7 +32,7 @@ pygame.display.set_icon(logo)
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
-menu_state = 0
+menu_state = 2
 # 0 = Main Menu
 # 1 = Leaderboard
 # 2 = Playing Game
