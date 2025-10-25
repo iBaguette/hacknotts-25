@@ -31,6 +31,8 @@ pygame.display.set_icon(logo)
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
+blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatter.mp3"))
+blood_splat.play()
 
 background = Background(screen)
 tower = Tower(screen)
@@ -113,6 +115,8 @@ while running:
             Coin(coin_group, enemy.rect.center, screen, collect_coin)
 
         enemy.kill()
+        blood_splat.set_volume(0.4)
+        blood_splat.play()
     
     if (not enable_piercing):
         for arrow in collided_arrows:
