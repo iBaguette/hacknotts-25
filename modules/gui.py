@@ -95,7 +95,7 @@ class GUI:
 
         # Coins collected
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            "Coins Collected: " + str(coins), 
+            "Gold Collected: " + str(coins),
             True, 
             gold)
         screen.blit(self.buttonImg, ((screen.get_width())-280, 33))
