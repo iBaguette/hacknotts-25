@@ -8,7 +8,7 @@ from modules.gui import *
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720)) # , pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280, 720) , pygame.FULLSCREEN)
 
 # Note: this import is here because the display has to be init'd before enemy is imported,
 # as enemy creates a dictionary using a function requiring opacity with a screen output
@@ -39,6 +39,10 @@ menu_state = 2
 # 3 = DEAD
 blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatter.mp3"))
 blood_splat.set_volume(0.1)
+
+background_music = pygame.mixer.Sound(os.path.join("assets", "sounds", "fantasy-adventures-wizard-journey.ogg"))
+background_music.set_volume(0.5)
+background_music.play()
 
 background = Background(screen)
 tower = Tower(screen)
