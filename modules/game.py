@@ -60,7 +60,7 @@ def game_mainloop(keys):
 
     # Draw background
     background.draw(screen)
-    
+
     # Draw tower
     tower.draw(screen)
     tower.update()
@@ -124,7 +124,7 @@ def game_mainloop(keys):
     if keys[pygame.K_w]:
         text_surface = my_font.render(
             "This is a **tower defense**, there is no moving!", 
-            True, 
+            True,
             (0, 0, 0),
             None)
         screen.blit(text_surface, (((screen.get_width()/2)-250, (screen.get_height()/2)-250)))
@@ -132,10 +132,11 @@ def game_mainloop(keys):
     elif keys[pygame.K_ESCAPE]:
         running = False
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     # print("tick")
+
+def game_event(event):
+    tower.start_shoot(pygame.mouse.get_pos())
+    shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)

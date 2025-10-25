@@ -46,8 +46,8 @@ while running:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            tower.start_shoot(pygame.mouse.get_pos())
-            shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)
+            if (menu_state == 2):
+                game_event(event)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
@@ -61,6 +61,8 @@ while running:
         game_mainloop(keys)
 
     # TODO: Other menus here, Leaderboard, DEAD
+
+    pygame.display.flip()
 
     # Run main clock
     dt = clock.tick(60) / 1000
