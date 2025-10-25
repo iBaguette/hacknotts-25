@@ -17,9 +17,12 @@ class GUI:
         #self.hp = 100 
         #self.coins = 0
         self.coinsImage = pygame.image.load(os.path.join("assets", "images", "coin1.png"))
+        self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides_Pressed.png"))
 
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
+        self.scaledButton = pygame.transform.scale(self.coinsImage, (100, 100))
 
+        self.rect = self.scaledCoin.get_rect()
         self.rect = self.scaledCoin.get_rect()
 
         self.rect.center = (50, 75)
@@ -27,8 +30,6 @@ class GUI:
         self.amplitude = 20
         self.speed = 3
         self.base_y = self.rect.centery
-
-
 
         # internal timer
         self.clock = pygame.time.Clock()
@@ -114,6 +115,7 @@ class GUI:
 
 
         screen.blit(self.scaledCoin, new_Rect.topright)
+        screen.blit(self.scaledButton, new_Rect.topright)
 
         self.clock.tick(60)
 
