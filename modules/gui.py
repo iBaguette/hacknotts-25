@@ -36,21 +36,48 @@ class GUI:
 
         pass
 
-    def draw(self, screen):
+    def draw(self, screen, coins):
 
-        font = pygame.font.SysFont("Calibri", 14)
+        def paragraph_split(pg, max_width, x, y, color, fnt):
+            words = pg.split(' ')
+            lines = [] 
+            current_line = ""
+            for word in words: 
+                test_line = current_line + word + " " 
+                if fnt.size(test_line)[0] < max_width:
+                    current_line = test_line 
+                else:
+                    lines.append(current_line)
+                    current_line = word + " "
+            lines.append(current_line)
+
+            for i, line in enumerate(lines):
+                text_surface = fnt.render(line, True, color)
+                screen.blit(text_surface, (x + 20, y + i * font.get_linesize() + 20))
+
+
+        font = pygame.font.SysFont("Calibri", 14, italic = True)
         white = (255, 255, 255)
         gold = (255, 215, 0)
         black = (0, 0, 0)
         paragraph = (
-            "The middle ages is a period running from 1066 to 1485" 
-            " and many developments and well-documented history occurred during this time. " 
-            "It started in the Battle of Hastings (1066), where King Harold II was (disputedly) shot" 
-            " with an arrow in the eye as documented in the Bayeux Tapestry and ended during the " 
-            "Battle of Bosworth and the conclusion of the Wars of the Roses." 
-            "What does this have to do with a hackathon? ")
-        txtsurf = font.render(paragraph, True, black)
-        screen.blit(txtsurf, (0,0))
+            "The middle ages is a period running from 1066 to 1485 " 
+            "and many developments and well-documented history occurred during this time. " 
+        )
+
+        paragraph2 = (
+            "It started in the Battle of Hastings (1066), where King Harold II was "
+            "(disputedly) shot with an arrow in the eye as documented in the Bayeux Tapestry "
+            "and ended during the Battle of Bosworth and the conclusion of the Wars of the "
+            "Roses. What does this have to do with a hackathon?"
+        )
+
+        paragraph_split(paragraph, 500, 0, 0, black, font)
+        paragraph_split(paragraph2, 500, 0, 50, black, font)
+
+
+        # txtsurf = font.render(paragraph, True, black)
+        # screen.blit(txtsurf, (0,0))
 # z,(200 - txtsurf.get_width() // 2, 150 - txtsurf.get_height()
         # senteneces = [s.strip() for s in paragraph.split('.') if s.strip()]
 
@@ -69,10 +96,10 @@ class GUI:
         screen.blit(text_surface, ((10, screen.get_height() - 35)))
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            "Gold Collected:", 
+            "Coins Collected: " + str(coins), 
             True, 
-            white)
-        screen.blit(text_surface, (((screen.get_width())-250, 40)))
+            gold)
+        screen.blit(text_surface, (((screen.get_width())-250, 40))) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
