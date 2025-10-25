@@ -37,6 +37,49 @@ menu_state = 0
 # 1 = Leaderboard
 # 2 = Playing Game
 # 3 = DEAD
+blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatter.mp3"))
+blood_splat.set_volume(0.1)
+
+background = Background(screen)
+tower = Tower(screen)
+gui = GUI(screen)
+shop = Shop()
+
+enemy_group = pygame.sprite.Group()
+frame_count = 0
+spawn_enemy_every_frame: int = 60
+
+coin_group = pygame.sprite.Group()
+coins = 100
+
+enable_piercing = False
+
+
+def upgrade_tower():
+    tower.upgrade_tower()
+    # TODO: ALSO INREASE HEALTH & MAYBE HEAL RATE HERE
+
+def upgrade_arrow():
+    global enable_piercing
+    enable_piercing = True
+
+def collect_coin():
+    global coins
+    coins += 1
+
+def remove_coins(value):
+    global coins
+    if (coins >= value):
+        coins -= value
+
+
+def generate_enemy(enemy_type = "goblin"):
+    """
+    Generate a goblin or knight
+    """
+    print(f"spawning {enemy_type}")
+    new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
+    return new_enemy
 
 while running:
     # poll for events
