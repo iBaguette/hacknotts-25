@@ -109,7 +109,7 @@ while running:
     coin_group.draw(screen)
 
     # Text/GUI
-    gui.draw(screen)
+    gui.draw(screen, coins)
 
     ## VERY IMPORTANT text
     if keys[pygame.K_w]:
