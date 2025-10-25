@@ -29,3 +29,6 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 - Bow is not 100% accurate all the time
 - Dragon boss fight at the end
 - The taller the tower, the smaller the player becomes as map zooms out. 
+- Bombs
+- Blood effects on death/damage
+- Piercing arrows (an upgrade)?

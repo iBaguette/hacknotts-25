@@ -21,6 +21,9 @@ pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
+logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
+pygame.display.set_icon(logo)
+
 background = Background(screen)
 tower = Tower(screen)
 gui = GUI(screen)
@@ -83,10 +86,10 @@ while running:
     if (frame_count % spawn_enemy_every_frame) == 0:
         generate_enemy()
 
-        if spawn_enemy_every_frame == 1:
-            pass
-        else:
-            spawn_enemy_every_frame -= 1
+        # if spawn_enemy_every_frame == 1:
+        #     pass
+        # else:
+        #     spawn_enemy_every_frame -= 1
 
     # Draw and Update Sprites Array
     
@@ -115,5 +118,4 @@ while running:
     # print("tick")
     frame_count += 1
 
-pygame.quit()
-
+pygame.quit()   
