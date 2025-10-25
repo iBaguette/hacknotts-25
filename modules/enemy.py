@@ -59,15 +59,12 @@ class Enemy(pygame.sprite.Sprite):
         global enemy_counter
         # print(f"Debug [enemy] : Creating enemy sprite with id {enemy_counter}")
         pygame.sprite.Sprite.__init__(self, enemy_group)
-        screen = pygame.display.get_surface()
-        self.area = screen.get_rect()
+        self.screen = pygame.display.get_surface()
+        self.area = self.screen.get_rect()
         self.coord_position = generate_random_positon()
         self.id = enemy_counter
         radius = 20
         size = radius*2 
-        self.image = pygame.Surface((size, size), pygame.SRCALPHA)
-        pygame.draw.circle(self.image, (255, 0, 0), (radius, radius), radius)
-        self.rect = self.image.get_rect(center=self.coord_position)
 
         # Health: is alive or is dead
         self.health = 1
@@ -78,9 +75,14 @@ class Enemy(pygame.sprite.Sprite):
         self.max_frame = 34
 
         # Now draw the sprite
-        self.image = self.goblin_torch_attack[self.frame]
-        self.rect = self.image.get_rect(center=self.coord_position)
-        
+
+
+
+
+        self.image = self.goblin_torch_attack[0]
+        self.rect : pygame.Rect = self.image.get_rect(center=self.coord_position)
+        self.rect = self.rect.inflate(-100,-100)
+        self.rect.topleft = self.coord_position
 
         # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
@@ -92,7 +94,7 @@ class Enemy(pygame.sprite.Sprite):
         # print("Debug [enemy] : drawing enemy")
 
         surface.blit(self.goblin_torch_attack[self.frame], self.rect.topleft)
-    
+
         self.frame += 1
         if self.frame >= self.max_frame:
             self.frame = 0
@@ -104,6 +106,7 @@ class Enemy(pygame.sprite.Sprite):
         """
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
+        pygame.draw.rect(self.screen, "red", self.rect)
 
         centre_pos = pygame.Vector2(self.area.center)
 

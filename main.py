@@ -93,8 +93,8 @@ while running:
 
     # Draw and Update Sprites Array
     
-    enemy_group.draw(screen); 
     enemy_group.update()
+    enemy_group.draw(screen); 
 
     # Text/GUI
     gui.draw(screen)
