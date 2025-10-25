@@ -87,7 +87,7 @@ class Shop:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if (self.castle_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 20 and self.archer_level < 3):
+                if (coins >= 20 and self.castle_level < 3):
                     remove_coins_function(20)
                     self.castle_level += 1
                     self.castle_button_type = self.button_pressed
