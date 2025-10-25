@@ -1,5 +1,5 @@
 # Example file showing a circle moving on screen
-import pygame, os
+import pygame, os, time
 
 from modules.background import *
 from modules.tower import *
@@ -16,7 +16,7 @@ pygame.font.init()
 my_font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30)
 
 centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-pygame.display.set_caption(title="Medieval Fantasy Tower Defense")
+pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")
 
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
@@ -26,6 +26,12 @@ tower = Tower(screen)
 gui = GUI(screen)
 
 enemy_group = pygame.sprite.Group()
+frame_count = 0
+spawn_enemy_every_frame: int = 100
+
+def generate_enemy():
+    new_enemy = enemy.Enemy(enemy_group)
+    return new_enemy
 
 while running:
     # poll for events
@@ -55,9 +61,20 @@ while running:
     # Draw tower
     tower.draw(screen)
 
+    
+    # Should there be a new enemy generated?
+    # TODO: make this faster and faster every time
+    if (frame_count % spawn_enemy_every_frame) == 0:
+        generate_enemy()
+
+        if spawn_enemy_every_frame == 1:
+            pass
+        else:
+            spawn_enemy_every_frame -= 1
 
     # Draw and Update Sprites Array
-    # enemy_group.draw()
+    
+    enemy_group.draw(screen); 
     enemy_group.update()
 
     # Text/GUI
@@ -79,6 +96,7 @@ while running:
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     dt = clock.tick(60) / 1000
-    print("tick")
+    # print("tick")
+    frame_count += 1
 
 pygame.quit()
