@@ -31,7 +31,7 @@ gui = GUI(screen)
 
 enemy_group = pygame.sprite.Group()
 frame_count = 0
-spawn_enemy_every_frame: int = 300
+spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
 coins = 0
