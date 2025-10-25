@@ -63,8 +63,6 @@ class Enemy(pygame.sprite.Sprite):
         self.area = self.screen.get_rect()
         self.coord_position = generate_random_positon()
         self.id = enemy_counter
-        radius = 20
-        size = radius*2 
 
         # Health: is alive or is dead
         self.health = 1
@@ -76,12 +74,8 @@ class Enemy(pygame.sprite.Sprite):
 
         # Now draw the sprite
 
-
-
-
         self.image = self.goblin_torch_attack[0]
-        self.rect : pygame.Rect = self.image.get_rect(center=self.coord_position)
-        self.rect = self.rect.inflate(-100,-100)
+        self.rect : pygame.Rect = self.image.get_rect()
         self.rect.topleft = self.coord_position
 
         # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
@@ -93,7 +87,7 @@ class Enemy(pygame.sprite.Sprite):
     def draw(self, surface):
         # print("Debug [enemy] : drawing enemy")
 
-        surface.blit(self.goblin_torch_attack[self.frame], self.rect.topleft)
+        surface.blit(self.goblin_torch_attack[self.frame], self.rect)
 
         self.frame += 1
         if self.frame >= self.max_frame:

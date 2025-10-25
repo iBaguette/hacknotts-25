@@ -3,6 +3,7 @@ import pygame, os, time
 
 from modules.background import *
 from modules.tower import *
+from modules.coin import *
 from modules.enemy import *
 from modules.gui import *
 
@@ -31,6 +32,13 @@ gui = GUI(screen)
 enemy_group = pygame.sprite.Group()
 frame_count = 0
 spawn_enemy_every_frame: int = 300
+
+coin_group = pygame.sprite.Group()
+coins = 0
+
+def collect_coin():
+    global coins
+    coins += 1
 
 def generate_enemy():
     new_enemy = Enemy(enemy_group)
@@ -71,6 +79,7 @@ while running:
     collided_arrows = pygame.sprite.groupcollide(tower.arrows, enemy_group, 0, 0)
 
     for enemy in collided_enemies:
+        Coin(coin_group, enemy.rect.center, screen, collect_coin)
         enemy.kill()
     
     for arrow in collided_arrows:
@@ -95,6 +104,9 @@ while running:
     
     enemy_group.update()
     enemy_group.draw(screen); 
+
+    coin_group.update(pygame.mouse.get_pos())
+    coin_group.draw(screen)
 
     # Text/GUI
     gui.draw(screen)
