@@ -46,7 +46,7 @@ def generate_random_positon(border_radius: int = 50):
             coord_x = randrange(width, width+100)
             coord_y = randrange(0, height)
             
-    print(coord_x, coord_y)
+    # print(coord_x, coord_y)
     return float(coord_x), float(coord_y)
 
 class Enemy(pygame.sprite.Sprite):
@@ -73,7 +73,7 @@ class Enemy(pygame.sprite.Sprite):
 
         # Now draw the sprite
 
-        print(f"Debug [enemy] : Enemy {self.id} spawned at position")
+        # print(f"Debug [enemy] : Enemy {self.id} spawned at position")
     
         self.image = self.goblin_torch_attack[self.frame]
         self.rect: pygame.Rect = self.image.get_rect()
@@ -88,7 +88,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed: float = 1.0
 
     def draw(self):
-        print("draw")
+        # print("draw")
         self.screen.blit(self.image, self.rect.center)
 
         self.frame_speed += 1
