@@ -101,8 +101,8 @@ class GUI:
             "Coins Collected: " + str(coins), 
             True, 
             gold)
-        screen.blit(self.scaledButton, ((screen.get_width())-300, 40))
-        screen.blit(text_surface, (((screen.get_width())-240, 40))) 
+        screen.blit(self.buttonImg, ((screen.get_width())-280, 33))
+        screen.blit(text_surface, (((screen.get_width())-260, 40))) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
