@@ -87,7 +87,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def draw(self):
         # print("draw")
-        self.screen.blit(self.image, self.rect.center)
 
         self.frame_speed += 1
         if self.frame_speed == self.frame_speed_max:
