@@ -132,10 +132,10 @@ while running:
     if get_enemy_type("goblin")["spawn_frame_chance_per10k"] >= random_percent_value:
         generate_enemy(enemy_type="goblin") if randint(1,6) < 5 else generate_enemy(enemy_type="goblin_fast")
 
-    elif get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= random_percent_value:
+    if get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= random_percent_value:
         generate_enemy(enemy_type="knight_generic")
 
-    elif get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random_percent_value:
+    if get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random_percent_value:
         generate_enemy(enemy_type="knight_golden")
 
         # if spawn_enemy_every_frame == 1:
