@@ -37,6 +37,14 @@ class GUI:
 
     def draw(self, screen):
 
+        # Comic Sans MS
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30).render(
+            f"FPS: {int(self.clock.get_fps())}",
+            True, 
+            (0, 0, 0),
+            None)
+        screen.blit(text_surface, ((0, 100)))
+
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30).render(
             "Gold:", 
             True, 

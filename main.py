@@ -30,7 +30,7 @@ gui = GUI(screen)
 
 enemy_group = pygame.sprite.Group()
 frame_count = 0
-spawn_enemy_every_frame: int = 100
+spawn_enemy_every_frame: int = 300
 
 def generate_enemy():
     new_enemy = Enemy(enemy_group)

@@ -1,7 +1,9 @@
-import pygame, math
+import pygame, math, os
 
 # from typing import Optional
 from random import randint, randrange
+
+from modules.utilities import sprite_sheet_slice
 
 global enemy_counter
 enemy_counter: int = 0
@@ -68,9 +70,19 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.coord_position)
 
         # Health: is alive or is dead
-        # self.health = 1
+        self.health = 1
 
-        pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
+        # Load necessary images
+        self.goblin_torch_attack = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=7, vertical_cells=5)
+        self.frame = 0
+        self.max_frame = 34
+
+        # Now draw the sprite
+        self.image = self.goblin_torch_attack[self.frame]
+        self.rect = self.image.get_rect(center=self.coord_position)
+        
+
+        # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
         enemy_counter += 1
         
@@ -78,7 +90,13 @@ class Enemy(pygame.sprite.Sprite):
 
     def draw(self, surface):
         # print("Debug [enemy] : drawing enemy")
-        surface.blit(self.image, self.rect)
+
+        surface.blit(self.goblin_torch_attack[self.frame], self.rect.topleft)
+    
+        self.frame += 1
+        if self.frame >= self.max_frame:
+            self.frame = 0
+
 
     def update(self):
         """
