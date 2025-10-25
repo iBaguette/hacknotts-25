@@ -33,10 +33,10 @@ class Tower:
         self.archer_rect.topleft = self.archer_position
         self.arrows = pygame.sprite.Group()
         self.rect : pygame.Rect = self.tower.get_rect()
-        self.rect = self.rect.inflate(-20, -150)
+        self.rect = self.rect.inflate(-100, -300)
         self.rect.topleft = self.tower_position
-        self.rect.centery += 90
-        self.rect.centerx += 10
+        self.rect.centery += 150
+        self.rect.centerx += 50
 
     def draw(self, screen):
 
