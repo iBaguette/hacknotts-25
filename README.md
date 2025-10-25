@@ -19,7 +19,6 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 - Upgrades unlocked with XP "level" but purchased with gold.
 - Once enemies reach the tower, it begins taking damage
     - Tower can be repaired with gold
-- The taller the tower, the smaller the player becomes as map zooms out. 
 - Menu to buy items
     - All enemies drop XP but only some drop gold nuggets that can be transferred to buy a bow
 - Progression: archer -> multi-archer -> hut -> keep -> bombard tower -> castle
@@ -29,4 +28,4 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 
 - Bow is not 100% accurate all the time
 - Dragon boss fight at the end
-
+- The taller the tower, the smaller the player becomes as map zooms out. 
