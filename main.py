@@ -1,8 +1,9 @@
 # Example file showing a circle moving on screen
 import pygame, os
 
-from background import *
-
+from modules.background import *
+from modules.tower import *
+from modules.gui import *
 from modules import enemy
 
 # pygame setup
@@ -21,7 +22,11 @@ logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
 background = Background(screen)
+tower = Tower(screen)
+gui = GUI(screen)
 
+enemySprite1 = pygame.sprite.Sprite()
+enemy1 = enemy.Enemy(enemySprite1)
 
 while running:
     # poll for events
@@ -32,10 +37,6 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
-
-    enemySprite1 = pygame.sprite.Sprite()
-    enemy1 = enemy.Enemy(enemySprite1)
-    enemy1.draw()
  
     pygame.draw.circle(screen, "green", centre_pos, 40)
 
@@ -58,8 +59,15 @@ while running:
 
     # Draw background
     background.draw(screen)
+    gui.draw(screen)
+
+    # Draw tower
+    tower.draw(screen)
 
     # Draw and Update Sprites Array
+    enemy1.draw()
+
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()
