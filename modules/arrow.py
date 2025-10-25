@@ -19,7 +19,10 @@ class Arrow(pygame.sprite.Sprite):
         change_x = self.position[0] - goal[0]
         change_y = self.position[1] - goal[1]
 
-        self.angle = math.atan(change_x / change_y) * 57.2958 + 90
+        if (change_y == 0):
+            self.angle = math.atan(1) * 57.2958 + 90
+        else:
+            self.angle = math.atan(change_x / change_y) * 57.2958 + 90
 
         if (change_y < 0):
             self.angle += 180

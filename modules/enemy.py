@@ -46,7 +46,7 @@ def generate_random_positon(border_radius: int = 50):
             coord_x = randrange(width, width+100)
             coord_y = randrange(0, height)
             
-    print(coord_x, coord_y)
+    # print(coord_x, coord_y)
     return float(coord_x), float(coord_y)
 
 class Enemy(pygame.sprite.Sprite):
@@ -65,21 +65,19 @@ class Enemy(pygame.sprite.Sprite):
         self.health = 1
 
         # Load necessary images
-        self.goblin_torch_attack = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=7, vertical_cells=5)
+        self.goblin_torch_attack = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=6, vertical_cells=5)
         self.frame = 0
-        self.max_frame = 34
+        self.max_frame = len(self.goblin_torch_attack) - 1
         self.frame_speed = 0
         self.frame_speed_max = 9
 
         # Now draw the sprite
 
-        print(f"Debug [enemy] : Enemy {self.id} spawned at position")
+        # print(f"Debug [enemy] : Enemy {self.id} spawned at position")
     
         self.image = self.goblin_torch_attack[self.frame]
         self.rect: pygame.Rect = self.image.get_rect()
         self.rect.center = generate_random_positon()
-
-        self.hitbox = self.rect.inflate(-100, -100)
 
         # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
@@ -88,8 +86,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed: float = 1.0
 
     def draw(self):
-        print("draw")
-        self.screen.blit(self.image, self.rect.center)
+        # print("draw")
 
         self.frame_speed += 1
         if self.frame_speed == self.frame_speed_max:
@@ -104,7 +101,7 @@ class Enemy(pygame.sprite.Sprite):
         """
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
-        #pygame.draw.rect(self.screen, "red", self.hitbox)
+        #pygame.draw.rect(self.screen, "red", self.rect)
 
         centre_pos = pygame.Vector2(self.area.center)
 
@@ -119,8 +116,6 @@ class Enemy(pygame.sprite.Sprite):
 
         # update float position, then update rects for rendering/collisions
         self.rect.center += velocity
-
-        self.hitbox.center = self.rect.center
 
         self.draw()
 
