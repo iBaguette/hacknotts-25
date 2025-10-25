@@ -3,6 +3,10 @@ import pygame, os, math
 from modules.utilities import *
 from modules.arrow import *
 
+coins_cashin = pygame.mixer.Sound(os.path.join("assets", "sounds", "coins.mp3"))
+coins_cashin.set_volume(300)
+coins_cashin.play()
+
 class Coin(pygame.sprite.Sprite):
 
     def __init__(self, group, position, screen, end_function):
@@ -46,6 +50,7 @@ class Coin(pygame.sprite.Sprite):
             else:
                 self.end()
                 self.kill()
+                coins_cashin.play()
 
             self.rect.center += self.velocity  
             self.speed += self.acceleration      

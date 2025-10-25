@@ -43,7 +43,7 @@ def generate_random_positon(border_radius: int = 50):
             coord_x = randrange(0, width)
             coord_y = randrange(height, height+100)
         case _:  # right
-            print("Spawning on right")
+            # print("Spawning on right")
             coord_x = randrange(width, width+100)
             coord_y = randrange(0, height)
             
@@ -87,7 +87,6 @@ class Enemy(pygame.sprite.Sprite):
         self.speed: float = get_enemy_type(enemy_type)["speed"]
 
     def draw(self):
-        # print("draw")
 
         self.frame_speed += 1
         if self.frame_speed == self.frame_speed_max:
@@ -108,12 +107,9 @@ class Enemy(pygame.sprite.Sprite):
 
         # direction vector from enemy to centre
         direction = centre_pos - self.rect.center
-        distance = direction.length()
-
-        if distance > 0:
-            velocity = direction.normalize() * self.speed
-        else:
-            velocity = pygame.Vector2(0, 0)
+        
+        velocity = direction.normalize() * self.speed
+        # print(direction, velocity, self.speed)
 
         # update float position, then update rects for rendering/collisions
         self.rect.center += velocity

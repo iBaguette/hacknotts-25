@@ -24,6 +24,14 @@ Click-to-shoot enemies from the centre. Enemies come in from the edge of the map
 - Progression: archer -> multi-archer -> hut -> keep -> bombard tower -> castle
 - Enemies: knight? orc? zombies? dragon? 
 
+### Next Day
+- Leaderboard
+- Death effect
+- Shop prices for piercing arrow/tower upgrade/reload speed
+- Nuke/wipeout option
+- Enemy healthbar 
+- Boss? Background change (purple) 
+
 ### Stretch
 
 - Bow is not 100% accurate all the time
