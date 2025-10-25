@@ -17,23 +17,47 @@ class Tower:
 
         self.red_archer_idle = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Red Units", "Archer", "Archer_Idle.png"),
                                                   6, 1, (1.3, 1.3))
-
+        self.red_archer_shoot = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Red Units", "Archer", "Archer_Shoot.png"),
+                                                  8, 1, (1.3, 1.3))
 
         self.archer_idle = self.red_archer_idle
+        self.archer_shoot = self.red_archer_shoot
         self.frame = 0
         self.max_frame = 6
-        self.frame_scalar = (1 * self.max_frame * self.max_frame) # Used to scale how often frames are incremented, this slows the animation down
-
+        self.frame_speed = 0
+        self.frame_speed_max = 9
+        self.shooting = False
         self.archer_position = (screen.get_width() / 2 - (self.archer_idle[0].get_width() / 2),
                          screen.get_height() / 2 - (self.archer_idle[0].get_height() / 1.2))
 
     def draw(self, screen):
 
         screen.blit(self.tower, self.tower_position)
+        if (not self.shooting):
+            screen.blit(self.archer_idle[self.frame], self.archer_position)
+        else:
+            screen.blit(self.archer_shoot[self.frame], self.archer_position)
+        
 
-        screen.blit(self.archer_idle[int((self.frame / self.frame_scalar)) % self.max_frame], self.archer_position)
+        self.frame_speed += 1
+        if self.frame_speed >= self.frame_speed_max:
+            self.frame_speed = 0
 
-        self.frame += 1
-        if self.frame >= self.frame_scalar:
-            self.frame = 0
+            self.frame += 1
+            if self.frame >= self.max_frame:
+                self.frame = 0
+
+                if (self.shooting):
+                    self.shooting = False
+                    self.max_frame = len(self.archer_idle) - 1
+
+
+    def start_shoot(self, position):
+        self.shooting = True
+        self.max_frame = len(self.archer_shoot) - 1
+        self.frame = 0
+
+        
+
+
         

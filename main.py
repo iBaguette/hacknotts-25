@@ -35,6 +35,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            tower.start_shoot(pygame.mouse.get_pos)
+
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
  
