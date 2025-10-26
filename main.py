@@ -146,6 +146,9 @@ while running:
     if (health <= 0):
         health = max_health
         set_menu(3)
+
+        
+
         # TODO: ADD SCORE TO LEADERBOARD
 
 
