@@ -62,7 +62,7 @@ def generate_enemy(enemy_type = "goblin"):
     new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
     return new_enemy
 
-def game_mainloop(keys, health, max_health, decrease_health):
+def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     global wave_hasfinished, wave_framestowait, wave, wave_duration
 
     # Draw background
@@ -72,6 +72,7 @@ def game_mainloop(keys, health, max_health, decrease_health):
 
     # Draw tower
     tower.draw(screen)
+
     tower.update()
     
     # Is there a collision between arrows and enemies?
@@ -102,6 +103,7 @@ def game_mainloop(keys, health, max_health, decrease_health):
     if wave_duration == 0:
         wave_hasfinished = True
         print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
+        reset_health()
 
     # Should there be a new enemy generated?
     if wave_hasfinished == True:
