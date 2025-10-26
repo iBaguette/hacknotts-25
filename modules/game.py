@@ -104,7 +104,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     collided_arrows = pygame.sprite.groupcollide(tower.arrows, enemy_group, 0, 0)
 
     for enemy in collided_enemies:
-        if random.randint(0, 10) <= 3:
+        if random.randint(0, 10) <= 5:
             Coin(coin_group, enemy.rect.center, screen, collect_coin)
 
         blood_system.spawn(enemy.rect.center, count=(randint(4, 12)))
@@ -130,7 +130,6 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     if wave_duration == 0:
         wave_hasfinished = True
         print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
-        reset_health()
 
     # Should there be a new enemy generated?
     if wave_hasfinished:
