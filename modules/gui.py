@@ -21,6 +21,7 @@ class GUI:
         # Initialising 
         self.coinsImage = pygame.image.load(os.path.join("assets", "images", "coin1.png"))
         self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides.png"))
+        self.button2Img = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Ribbons", "Ribbon_Blue_3Slides.png"))
         self.healthImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Banners", "Carved_3Slides.png"))
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
         self.wave_count: int = 1
@@ -78,12 +79,12 @@ class GUI:
                 text_surface = fnt.render(line, True, color)
                 screen.blit(text_surface, (x + 20, y + i * font.get_linesize() + 20))
 
-
-        font = pygame.font.SysFont("Calibri", 14, italic = True)
         white = (255, 255, 255)
         gold = (255, 215, 0)
         black = (0, 0, 0)
         borderColor = (0, 255, 0)
+
+        font = pygame.font.SysFont("Calibri", 14, italic = True)
         paragraph = (
             "The middle ages is a period running from 1066 to 1485 " 
             "and many developments and well-documented history occurred during this time. "     
@@ -118,9 +119,9 @@ class GUI:
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
             f"Wave: {self.wave_count}`",
             True, 
-            gold)
-        screen.blit(self.buttonImg, ((screen.get_width())/2-280, 600 ))
-        screen.blit(text_surface, (((screen.get_width())/2-260, 600 ))) 
+            black)
+        screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 250))
+        screen.blit(text_surface, (self.health_x + 80, self.health_y + 250)) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
@@ -139,12 +140,12 @@ class GUI:
         #  --- the red bar should update as the health decays
         print(self.health_x)
         screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
-        screen.blit(self.scaledBar, (self.health_x + 57 , self.health_y - 200))
+        screen.blit(self.scaledBar, (self.health_x + 57, self.health_y - 200))
 
-        if health < 75 and health > 25:
-            borderColor = (255, 191, 0) # amber
-        elif health <= 25:
+        if health <= 25:
             borderColor = (255, 0, 0) # red
+        elif health < 75 and health > 25:
+            borderColor = (255, 191, 0) # amber
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
             str(int((health / max_health) * 100)) + "% ",
