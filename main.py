@@ -50,7 +50,7 @@ spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
 coins = 0
-starting_coins = 100
+starting_coins = 0
 user_name = ""
 score = 0
 
@@ -64,12 +64,12 @@ def set_name(value):
     user_name = value
 
 def set_menu(value):
-    global menu_state
+    global menu_state, score
     menu_state = value
     if (value == 2):
         # User presses play, reset some game variables
         score = 0
-        coins = starting_coins
+        reset_game_state()
     if (value == 1):
         # User goes to leaderboard
         update_leaderboard()

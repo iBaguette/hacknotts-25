@@ -19,20 +19,27 @@ new_wave.set_volume(140)
 pygame.font.init()
 my_font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30)
 
-background = Background(screen)
-tower = Tower(screen)
-gui = GUI(screen)
-shop = Shop()
+def reset_game_state():
+    global background, tower, gui, shop, first_wave_toggle
+    global enemy_group, frame_count, spawn_enemy_every_frame
+    global coin_group, coins, enable_piercing
 
-enemy_group = pygame.sprite.Group()
-frame_count = 0
-spawn_enemy_every_frame: int = 60
+    background = Background(screen)
+    tower = Tower(screen)
+    gui = GUI(screen)
+    shop = Shop()
 
-coin_group = pygame.sprite.Group()
-coins = 1000
+    enemy_group = pygame.sprite.Group()
+    coin_group = pygame.sprite.Group()
+    frame_count = 0
+    spawn_enemy_every_frame = 60
+    coins = 0
+    enable_piercing = False
+    first_wave_toggle = True
 
 global wave_hasfinished, wave, wave_framestowait, wave_duration, wave_spawn_scale
 
+first_wave_toggle = True
 BASE_WAVE_GAP_FRAMES = 240
 MIN_WAVE_GAP_FRAMES = 120
 BASE_WAVE_DURATION_FRAMES = 720
@@ -45,9 +52,6 @@ wave_hasfinished: bool = True
 wave_framestowait: int = BASE_WAVE_GAP_FRAMES
 wave_duration: int = BASE_WAVE_DURATION_FRAMES
 wave_spawn_scale: float = 1.0
-first_wave_toggle: bool = True
-
-enable_piercing = False
 
 def upgrade_tower():
     tower.upgrade_tower()
