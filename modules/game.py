@@ -19,7 +19,7 @@ new_wave.set_volume(140)
 pygame.font.init()
 my_font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30)
 
-def reset_game_state():
+def reset_game_state(coin_max):
     global background, tower, gui, shop, first_wave_toggle
     global enemy_group, frame_count, spawn_enemy_every_frame
     global coin_group, coins, enable_piercing
@@ -33,7 +33,7 @@ def reset_game_state():
     coin_group = pygame.sprite.Group()
     frame_count = 0
     spawn_enemy_every_frame = 60
-    coins = 0
+    coins = coin_max
     enable_piercing = False
     first_wave_toggle = True
 
@@ -204,7 +204,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
 
     return empty_enemy_group
 
-def game_event(event):
+def game_event(event, upgrade_health):
     if (event.type == pygame.MOUSEBUTTONDOWN):
         tower.start_shoot(pygame.mouse.get_pos())
-        shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)
+        shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow, upgrade_health)
