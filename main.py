@@ -64,17 +64,18 @@ def set_name(value):
     user_name = value
 
 def set_menu(value):
-    global menu_state, score
+    global menu_state, score, starting_coins
     menu_state = value
     if (value == 2):
         # User presses play, reset some game variables
         score = 0
-        reset_game_state()
+        reset_game_state(starting_coins)
     if (value == 1):
         # User goes to leaderboard
         update_leaderboard()
 
 def reset_health():
+    global health
     health = max_health
 
 def decrease_health(value):
@@ -124,7 +125,7 @@ while running:
             lead_event(event)
 
         elif (menu_state == 2):
-            game_event(event)
+            game_event(event, reset_health)
 
         elif (menu_state == 3):
             menu_event(event)

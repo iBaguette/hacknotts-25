@@ -54,19 +54,32 @@ class Shop:
         self.arrow_level = 0 # max 1, stays pressed
         self.arrow_button_type = self.button_background
 
+        self.health_button = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Icons", "Regular_07.png"), 1, 1, (1.1, 1.1))[0]
+        self.health_button_rect = pygame.Rect(self.shop_position[0], self.shop_position[1] + self.button_spacing * 4,
+                                            self.button_background.get_rect().width, self.button_background.get_rect().height)
+        
+        self.health_button_blit = self.health_button.get_rect()
+        self.health_button_blit.center = self.health_button_rect.center
+        self.health_button_blit.centery -= 25
+        self.health_level = 0 # max 1, stays pressed
+        self.health_button_type = self.button_background
+        self.health_button_timer = 0
 
     def draw(self, screen):
         screen.blit(self.shop_icon, self.shop_position)
         screen.blit(self.castle_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 1))
         screen.blit(self.archer_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 2))
         screen.blit(self.arrow_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 3))
+        screen.blit(self.health_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 4))
 
         screen.blit(self.castle_buttons[self.castle_level], self.castle_button_blit)
         screen.blit(self.archer_buttons[self.archer_level], self.archer_button_blit)
         screen.blit(self.arrow_button, self.arrow_button_blit)
+        screen.blit(self.health_button, self.health_button_blit)
 
         self.castle_button_type = self.button_background
         self.archer_button_type = self.button_background
+        self.health_button_type = self.button_background
 
         if (self.castle_button_timer > 0):
             self.castle_button_timer -= 1
@@ -76,6 +89,10 @@ class Shop:
             self.archer_button_timer -= 1
             self.archer_button_type = self.button_pressed
 
+        if (self.health_button_timer > 0):
+            self.health_button_timer -= 1
+            self.health_button_type = self.button_pressed
+
         if (self.castle_level == 3):
             self.castle_button_type = self.button_pressed
 
@@ -83,7 +100,7 @@ class Shop:
             self.archer_button_type = self.button_pressed
 
 
-    def event(self, event, mouse_pos, coins, remove_coins_function, upgrade_tower, upgrade_archer, upgrade_arrow):
+    def event(self, event, mouse_pos, coins, remove_coins_function, upgrade_tower, upgrade_archer, upgrade_arrow, upgrade_health):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if (self.castle_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -110,4 +127,13 @@ class Shop:
                     self.arrow_level = 1
                     self.arrow_button_type = self.button_pressed
                     upgrade_arrow()
+                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
+            
+            if (self.health_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
+                if (coins >= 20):
+                    remove_coins_function(20)
+                    self.health_level = 1
+                    self.health_button_type = self.button_pressed
+                    self.health_button_timer = 20
+                    upgrade_health()
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
