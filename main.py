@@ -140,7 +140,7 @@ while running:
     keys = pygame.key.get_pressed()
 
     if (menu_state == 0):
-        menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
+        menu_mainloop(keys, set_name, set_menu, "Medieval Fantasy Tower Defence")
 
     elif (menu_state == 1):
         lead_mainloop(set_menu)

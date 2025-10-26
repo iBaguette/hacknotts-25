@@ -104,20 +104,20 @@ class Shop:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if (self.castle_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 10 and self.castle_level < 3):
-                    remove_coins_function(10)
+                if (coins >= 5 and self.castle_level < 3):
+                    remove_coins_function(5)
                     self.castle_level += 1
                     self.castle_button_type = self.button_pressed
-                    self.castle_button_timer = 20
+                    self.castle_button_timer = 30
                     upgrade_tower()
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
                     
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 10 and self.archer_level < 3):
-                    remove_coins_function(10)
+                if (coins >= 5 and self.archer_level < 3):
+                    remove_coins_function(5)
                     self.archer_level += 1
                     self.archer_button_type = self.button_pressed
-                    self.archer_button_timer = 20
+                    self.archer_button_timer = 30
                     upgrade_archer()
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
 
@@ -130,10 +130,10 @@ class Shop:
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
             
             if (self.health_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
-                if (coins >= 20):
-                    remove_coins_function(20)
+                if (coins >= 10):
+                    remove_coins_function(10)
                     self.health_level = 1
                     self.health_button_type = self.button_pressed
-                    self.health_button_timer = 20
+                    self.health_button_timer = 30
                     upgrade_health()
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
