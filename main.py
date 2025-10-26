@@ -84,7 +84,7 @@ def decrease_health(value):
 
 def upgrade_tower():
     tower.upgrade_tower()
-    max_health += 500
+    max_health *= 1.6
     health += int(health * 0.4)
     if (health > max_health):
         health = max_health
