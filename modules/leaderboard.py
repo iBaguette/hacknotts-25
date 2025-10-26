@@ -27,7 +27,7 @@ spacing = 150
 item1 = LeaderboardItem((screen.get_width()/2, (0)+offset+spacing*2), medieval_font, item1_image)
 item2 = LeaderboardItem((screen.get_width()/2, (0)+offset+spacing*3), medieval_font, item2_image)
 item3 = LeaderboardItem((screen.get_width()/2, (0)+offset+spacing*4), medieval_font, item3_image)
-back_button = MenuButton((200, screen.get_height()-80), 1, medieval_font, "back")
+back_button = MenuButton((200, screen.get_height()-80), 1, medieval_font, "Back")
 data = []
 sorted_data = []
 data.append({"name":"None", "score":"0"})
