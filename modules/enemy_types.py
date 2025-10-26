@@ -7,7 +7,7 @@ enemy_types = {
         "spawn_frame_chance_per10k": 75,
         "drop_chance": 0.41,
         "gold_drop": 1,
-        "damage": 1,
+        "damage": 0.4,
         "speed": 0.8,
         "spritesheet": sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=6, vertical_cells=5)
     },

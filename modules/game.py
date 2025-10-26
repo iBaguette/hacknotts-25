@@ -5,6 +5,7 @@ from modules.shop import *
 from modules.tower import *
 from modules.gui import *
 from modules.game import *
+from modules.particle import BloodSystem, BloodParticle
 
 screen = pygame.display.get_surface()
 
@@ -18,11 +19,12 @@ new_wave.set_volume(140)
 
 pygame.font.init()
 my_font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 30)
+blood_system = BloodSystem()
 
 def reset_game_state(coin_max):
     global background, tower, gui, shop, first_wave_toggle
     global enemy_group, frame_count, spawn_enemy_every_frame
-    global coin_group, coins, enable_piercing
+    global coin_group, coins, enable_piercing, blood_system
 
     background = Background(screen)
     tower = Tower(screen)
@@ -36,6 +38,8 @@ def reset_game_state(coin_max):
     coins = coin_max
     enable_piercing = False
     first_wave_toggle = True
+
+    blood_system.reset()
 
 global wave_hasfinished, wave, wave_framestowait, wave_duration, wave_spawn_scale
 
@@ -103,16 +107,19 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         if random.randint(0, 10) <= 3:
             Coin(coin_group, enemy.rect.center, screen, collect_coin)
 
+        blood_system.spawn(enemy.rect.center, count=(randint(4, 12)))
         enemy.kill()
         blood_splat.set_volume(0.4)
         blood_splat.play()
-    
+
     if (not enable_piercing):
         for arrow in collided_arrows:
             arrow.kill()
     else:
         for arrow in tower.arrows:
             arrow.check_range(screen)
+
+    blood_system.update(screen)
 
     killing_enemies = pygame.sprite.spritecollide(tower, enemy_group, 0)
     for enemy in killing_enemies:
