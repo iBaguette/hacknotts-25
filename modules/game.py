@@ -28,6 +28,8 @@ spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
 coins = 1000
+health = 100
+max_health = 100
 
 enable_piercing = False
 
@@ -118,7 +120,7 @@ def game_mainloop(keys):
 
     # Text/GUI
     shop.draw(screen)
-    gui.draw(screen, coins)
+    gui.draw(screen, coins, max_health, health)
 
     ## VERY IMPORTANT text
     if keys[pygame.K_w]:
@@ -138,5 +140,6 @@ def game_mainloop(keys):
     # print("tick")
 
 def game_event(event):
-    tower.start_shoot(pygame.mouse.get_pos())
-    shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)
+    if (event.type == pygame.MOUSEBUTTONDOWN):
+        tower.start_shoot(pygame.mouse.get_pos())
+        shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow)

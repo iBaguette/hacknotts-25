@@ -47,7 +47,7 @@ class GUI:
 
         pass
 
-    def draw(self, screen, coins):
+    def draw(self, screen, coins, max_health, health):
 
         def paragraph_split(pg, max_width, x, y, color, fnt):
             words = pg.split(' ')

@@ -38,3 +38,16 @@ def menu_mainloop(keys):
     text_field.draw(screen)
     play_button.draw(screen)
     lead_button.draw(screen)
+
+
+def menu_event(event):
+
+    if event.type == pygame.KEYDOWN:
+        print(event.key)
+
+
+
+
+
+
+
