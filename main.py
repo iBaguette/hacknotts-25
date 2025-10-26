@@ -32,7 +32,7 @@ pygame.display.set_icon(logo)
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
-menu_state = 2
+menu_state = 0
 # 0 = Main Menu
 # 1 = Leaderboard
 # 2 = Playing Game
@@ -54,10 +54,24 @@ frame_count = 0
 spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
-coins = 100
+coins = 0
+starting_coins = 100
+user_name = ""
+score = 0
 
 enable_piercing = False
 
+def set_name(value):
+    global user_name
+    user_name = value
+
+def set_menu(value):
+    global menu_state
+    menu_state = value
+    if (value == 2):
+        # User presses play, reset some game variables
+        score = 0
+        coins = starting_coins
 
 def upgrade_tower():
     tower.upgrade_tower()
@@ -92,20 +106,28 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if (menu_state == 2):
-                game_event(event)
+        if (menu_state == 0):
+            menu_event(event)
+
+        elif (menu_state == 2):
+            game_event(event)
+
+        elif (menu_state == 3):
+            menu_event(event)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
- 
+
     keys = pygame.key.get_pressed()
 
     if (menu_state == 0):
-        menu_mainloop(keys)
+        menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
 
     elif (menu_state == 2):
         game_mainloop(keys)
+
+    if (menu_state == 3):
+        menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")
 
     # TODO: Other menus here, Leaderboard, DEAD
 
@@ -114,5 +136,7 @@ while running:
     # Run main clock
     dt = clock.tick(60) / 1000
     frame_count += 1
+    if (frame_count % 60 == 0 and menu_state == 2):
+        score += 1
 
 pygame.quit()

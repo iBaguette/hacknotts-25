@@ -12,6 +12,7 @@ class MenuTextField:
         self.rect = self.regular.get_rect()
         self.rect.center = position
         self.value = "Bob"
+        self.font = font
 
         self.text  = font.render(
             self.value, 
@@ -26,6 +27,13 @@ class MenuTextField:
             None)
         
     def draw(self, screen):
+        
+        self.text  = self.font.render(
+            self.value, 
+            True, 
+            (0, 0, 0),
+            None)
+
         screen.blit(self.regular, self.rect)
         screen.blit(self.text, (self.rect.centerx-self.text.get_width()/2, self.rect.centery-self.text.get_height() + 20))
         screen.blit(self.line, (self.rect.centerx-self.line.get_width()/2, self.rect.centery-self.line.get_height() + 30))
