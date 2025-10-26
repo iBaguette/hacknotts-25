@@ -54,14 +54,14 @@ class Shop:
         self.arrow_level = 0 # max 1, stays pressed
         self.arrow_button_type = self.button_background
 
-        self.health_button = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Icons", "Regular_07.png"), 1, 1, (1.1, 1.1))[0]
-        self.health_button_rect = pygame.Rect(self.shop_position[0], self.shop_position[1] + self.button_spacing * 4,
+        self.health_button = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Icons", "Regular_08.png"), 1, 1, (1.1, 1.1))[0]
+        self.health_button_rect = pygame.Rect(self.shop_position[0], self.shop_position[1] + self.button_spacing * 4 + 10,
                                             self.button_background.get_rect().width, self.button_background.get_rect().height)
         
         self.health_button_blit = self.health_button.get_rect()
         self.health_button_blit.center = self.health_button_rect.center
         self.health_button_blit.centery -= 25
-        self.health_level = 0 # max 1, stays pressed
+        self.health_level = 0
         self.health_button_type = self.button_background
         self.health_button_timer = 0
 
