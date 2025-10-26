@@ -68,6 +68,7 @@ class Tower:
         self.rect.topleft = self.tower_position
         self.rect.centery += 150
         self.rect.centerx += 50
+        self.current_wave: int = 0
 
     def upgrade_tower(self):
         if (self.tower_level < 3):

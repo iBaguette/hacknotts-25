@@ -71,6 +71,7 @@ class Enemy(pygame.sprite.Sprite):
         self.max_frame = len(self.goblin_torch_attack) - 1
         self.frame_speed = 0
         self.frame_speed_max = 9
+        self.damage = get_enemy_type(enemy_type)["damage"]
 
         # Now draw the sprite
 

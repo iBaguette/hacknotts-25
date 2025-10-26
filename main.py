@@ -26,9 +26,6 @@ pygame.mixer.init()
 centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")
 
-logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
-pygame.display.set_icon(logo)
-
 menu_state = 0
 # 0 = Main Menu
 # 1 = Leaderboard
@@ -39,7 +36,7 @@ blood_splat.set_volume(0.1)
 
 background_music = pygame.mixer.Sound(os.path.join("assets", "sounds", "fantasy-adventures-wizard-journey.ogg"))
 background_music.set_volume(0.5)
-background_music.play()
+background_music.play(loops=999)
 
 background = Background(screen)
 tower = Tower(screen)
