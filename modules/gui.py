@@ -159,28 +159,28 @@ class GUI:
         # Shop prices 
         # --- price 1
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "10 Coins:",
+            "5 Coins:",
             True, 
             black)
         screen.blit(text_surface, (30, 260))
 
         # --- price 2
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "10 Coins",
+            "5 Coins",
             True, 
             black)
         screen.blit(text_surface, ((30, 393)))
 
         # --- price 3
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "20 Coins",
+            "10 Coins",
             True, 
             black)
         screen.blit(text_surface, ((30, 526)))
 
         # --- price 4
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "20 Coins",
+            "10 Coins",
             True, 
             black)
         screen.blit(text_surface, ((30, 659)))
