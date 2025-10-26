@@ -70,6 +70,9 @@ def set_menu(value):
         # User presses play, reset some game variables
         score = 0
         coins = starting_coins
+    if (value == 1):
+        # User goes to leaderboard
+        update_leaderboard()
 
 def reset_health():
     health = max_health
