@@ -67,6 +67,10 @@ def set_menu(value):
         score = 0
         coins = starting_coins
 
+def decrease_health(value):
+    global health
+    health -= value
+
 def upgrade_tower():
     tower.upgrade_tower()
     # TODO: ALSO INREASE HEALTH & MAYBE HEAL RATE HERE
@@ -118,7 +122,7 @@ while running:
         menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
 
     elif (menu_state == 2):
-        game_mainloop(keys)
+        game_mainloop(keys, decrease_health)
 
     if (menu_state == 3):
         menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")

@@ -97,7 +97,7 @@ def game_mainloop(keys, decrease_health):
     killing_enemies = pygame.sprite.spritecollide(tower, enemy_group, 0)
     for enemy in killing_enemies:
         enemy.stop_moving()
-        #decrease_health(enemy.)
+        decrease_health(enemy.damage)
         # TODO: SOMETIMES TAKE DAMAGE TO TOWER WHILE THEY ARE HERE
 
     if wave_duration == 0:
