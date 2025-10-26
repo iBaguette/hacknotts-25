@@ -66,6 +66,9 @@ def remove_coins(value):
     if (coins >= value):
         coins -= value
 
+def empty_enemy_group():
+    enemy_group.empty()
+
 def generate_enemy(enemy_type = "goblin"):
     """
     Generate a goblin or knight
@@ -190,7 +193,8 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
             wave_duration = 0
             wave_hasfinished = True
             print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
-    
+
+    return empty_enemy_group
 
 def game_event(event):
     if (event.type == pygame.MOUSEBUTTONDOWN):

@@ -3,9 +3,9 @@ import pygame, os, math
 from modules.utilities import *
 
 
-class MenuTextField:
+class LeaderboardItem:
 
-    def __init__(self, position, click_function, font : pygame.font, image : pygame.Surface):
+    def __init__(self, position, font : pygame.font, image : pygame.Surface, text):
 
         self.regular = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Disable_3Slides.png"), 1, 1, (2, 2))[0]
 
@@ -13,7 +13,7 @@ class MenuTextField:
 
         self.rect = self.regular.get_rect()
         self.rect.center = position
-        self.value = ""
+        self.value = text
         self.font = font
 
         self.text  = font.render(

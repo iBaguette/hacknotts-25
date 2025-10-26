@@ -6,7 +6,7 @@ from modules.tower import *
 from modules.gui import *
 from modules.game import *
 from modules.menu_button import *
-from modules.menu_text_field import *
+from modules.leaderboard_item import *
 
 screen = pygame.display.get_surface()
 
@@ -18,7 +18,9 @@ medieval_font = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium
 
 background = Background(screen)
 
+item1_image = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Icons", "Regular_04.png"), 1, 1, (2, 2))
 
+item1 = LeaderboardItem((screen.get_width()/2, (screen.get_height()/2)-150), medieval_font, item1_image, "Test")
 
 
 back_button = MenuButton((200, screen.get_height()-80), 1, medieval_font, "back")
@@ -35,6 +37,9 @@ def lead_mainloop(set_menu):
             (0, 0, 0),
             None)
     screen.blit(title, (((screen.get_width()/2)-title.get_width()/2, (screen.get_height()/2)-250)))
+
+    item1.draw(screen)
+
 
     if (back_button.draw(screen) == 0):
         set_menu(0)

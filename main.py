@@ -138,7 +138,7 @@ while running:
         lead_mainloop(set_menu)
 
     elif (menu_state == 2):
-        game_mainloop(keys, health, max_health, decrease_health, reset_health)
+        empty_enemy_group = game_mainloop(keys, health, max_health, decrease_health, reset_health)
 
     if (menu_state == 3):
         menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")
@@ -146,14 +146,12 @@ while running:
     if (health <= 0):
         health = max_health
         set_menu(3)
-
+        gui.wave_count = 0
+        empty_enemy_group()
         
 
         # TODO: ADD SCORE TO LEADERBOARD
 
-
-
-    # TODO: Other menus here, Leaderboard, DEAD
 
     pygame.display.flip()
 
