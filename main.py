@@ -1,5 +1,5 @@
 # Example file showing a circle moving on screen
-import pygame, os, time, random
+import pygame, os, time, random, requests, json
 
 from modules.background import *
 from modules.shop import *
@@ -16,6 +16,7 @@ from modules.enemy import *
 from modules.coin import *
 from modules.game import *
 from modules.mainmenu import *
+from modules.leaderboard import *
 
 clock = pygame.time.Clock()
 running = True
@@ -26,13 +27,7 @@ pygame.mixer.init()
 centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")
 
-logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
-pygame.display.set_icon(logo)
-
-logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
-pygame.display.set_icon(logo)
-
-menu_state = 2
+menu_state = 0
 # 0 = Main Menu
 # 1 = Leaderboard
 # 2 = Playing Game
@@ -41,8 +36,8 @@ blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatte
 blood_splat.set_volume(0.1)
 
 background_music = pygame.mixer.Sound(os.path.join("assets", "sounds", "fantasy-adventures-wizard-journey.ogg"))
-background_music.set_volume(0.5)
-background_music.play()
+background_music.set_volume(0.3)
+background_music.play(loops=999)
 
 background = Background(screen)
 tower = Tower(screen)
@@ -54,14 +49,45 @@ frame_count = 0
 spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
-coins = 100
+coins = 0
+starting_coins = 0
+user_name = ""
+score = 0
+
+max_health = 1000
+health = max_health
 
 enable_piercing = False
 
+def set_name(value):
+    global user_name
+    user_name = value
+
+def set_menu(value):
+    global menu_state, score, starting_coins
+    menu_state = value
+    if (value == 2):
+        # User presses play, reset some game variables
+        score = 0
+        reset_game_state(starting_coins)
+    if (value == 1):
+        # User goes to leaderboard
+        update_leaderboard()
+
+def reset_health():
+    global health
+    health = max_health
+
+def decrease_health(value):
+    global health
+    health -= value
 
 def upgrade_tower():
     tower.upgrade_tower()
-    # TODO: ALSO INREASE HEALTH & MAYBE HEAL RATE HERE
+    max_health *= 1.6
+    health += int(health * 0.4)
+    if (health > max_health):
+        health = max_health
 
 def upgrade_arrow():
     global enable_piercing
@@ -76,7 +102,6 @@ def remove_coins(value):
     if (coins >= value):
         coins -= value
 
-
 def generate_enemy(enemy_type = "goblin"):
     """
     Generate a goblin or knight
@@ -86,33 +111,64 @@ def generate_enemy(enemy_type = "goblin"):
     return new_enemy
 
 while running:
+
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if (menu_state == 2):
-                game_event(event)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+
+        if (menu_state == 0):
+            menu_event(event)
+
+        elif (menu_state == 1):
+            lead_event(event)
+
+        elif (menu_state == 2):
+            game_event(event, reset_health)
+
+        elif (menu_state == 3):
+            menu_event(event)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("darkgreen")
- 
+
     keys = pygame.key.get_pressed()
 
     if (menu_state == 0):
-        menu_mainloop(keys)
+        menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
+
+    elif (menu_state == 1):
+        lead_mainloop(set_menu)
 
     elif (menu_state == 2):
-        game_mainloop(keys)
+        empty_enemy_group = game_mainloop(keys, health, max_health, decrease_health, reset_health)
 
-    # TODO: Other menus here, Leaderboard, DEAD
+    if (menu_state == 3):
+        menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")
+
+    if (health <= 0):
+        health = max_health
+        set_menu(3)
+        gui.wave_count = 0
+        empty_enemy_group()
+        
+        if (user_name != ""):
+            try:
+                requests.post("https://hn25.ibaguette.com/leaderboard", json={"name":user_name, "score":score})
+            except:
+                pass
 
     pygame.display.flip()
 
     # Run main clock
     dt = clock.tick(60) / 1000
     frame_count += 1
+    if (frame_count % 60 == 0 and menu_state == 2):
+        score += 1
 
 pygame.quit()

@@ -4,16 +4,16 @@ from modules.utilities import sprite_sheet_slice
 
 enemy_types = {
     "goblin": {
-        "spawn_frame_chance_per10k": 50,
-        "drop_chance": 0.3,
+        "spawn_frame_chance_per10k": 75,
+        "drop_chance": 0.41,
         "gold_drop": 1,
-        "damage": 1,
-        "speed": 1,
+        "damage": 0.4,
+        "speed": 0.8,
         "spritesheet": sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Goblins", "Troops", "Torch", "Red", "Torch_Red.png"), horizontal_cells=6, vertical_cells=5)
     },
     "goblin_fast": {
         "spawn_frame_chance_per10k": 50,
-        "drop_chance": 0.3,
+        "drop_chance": 0.65,
         "gold_drop": 1,
         "damage": 1,
         "speed": 2,
