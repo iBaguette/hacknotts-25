@@ -16,6 +16,7 @@ from modules.enemy import *
 from modules.coin import *
 from modules.game import *
 from modules.mainmenu import *
+from modules.leaderboard import *
 
 clock = pygame.time.Clock()
 running = True
@@ -35,7 +36,7 @@ blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatte
 blood_splat.set_volume(0.1)
 
 background_music = pygame.mixer.Sound(os.path.join("assets", "sounds", "fantasy-adventures-wizard-journey.ogg"))
-background_music.set_volume(0.5)
+background_music.set_volume(0.3)
 background_music.play(loops=999)
 
 background = Background(screen)
@@ -70,13 +71,19 @@ def set_menu(value):
         score = 0
         coins = starting_coins
 
+def reset_health():
+    health = max_health
+
 def decrease_health(value):
     global health
     health -= value
 
 def upgrade_tower():
     tower.upgrade_tower()
-    # TODO: ALSO INREASE HEALTH & MAYBE HEAL RATE HERE
+    max_health += 500
+    health += int(health * 0.4)
+    if (health > max_health):
+        health = max_health
 
 def upgrade_arrow():
     global enable_piercing
@@ -90,7 +97,6 @@ def remove_coins(value):
     global coins
     if (coins >= value):
         coins -= value
-
 
 def generate_enemy(enemy_type = "goblin"):
     """
@@ -111,6 +117,9 @@ while running:
         if (menu_state == 0):
             menu_event(event)
 
+        elif (menu_state == 1):
+            lead_event(event)
+
         elif (menu_state == 2):
             game_event(event)
 
@@ -125,13 +134,24 @@ while running:
     if (menu_state == 0):
         menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
 
+    elif (menu_state == 1):
+        lead_mainloop(set_menu)
+
     elif (menu_state == 2):
-        game_mainloop(keys, health, max_health, decrease_health)
+        empty_enemy_group = game_mainloop(keys, health, max_health, decrease_health, reset_health)
 
     if (menu_state == 3):
         menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")
 
-    # TODO: Other menus here, Leaderboard, DEAD
+    if (health <= 0):
+        health = max_health
+        set_menu(3)
+        gui.wave_count = 0
+        empty_enemy_group()
+        
+
+        # TODO: ADD SCORE TO LEADERBOARD
+
 
     pygame.display.flip()
 

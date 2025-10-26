@@ -138,7 +138,6 @@ class GUI:
 
         # Drawing the health bar onto the window 
         #  --- the red bar should update as the health decays
-        print(self.health_x)
         screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
         screen.blit(self.scaledBar, (self.health_x + 57, self.health_y - 200))
 

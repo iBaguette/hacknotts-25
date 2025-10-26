@@ -17,7 +17,6 @@ pygame.font.init()
 medieval_font = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 60)
 
 background = Background(screen)
-tower = Tower(screen)
 text_field = MenuTextField((screen.get_width()/2, screen.get_height()/2 -80), 1, medieval_font)
 play_button = MenuButton((screen.get_width()/2, screen.get_height()/2 + 60), 1, medieval_font, "play")
 lead_button = MenuButton((screen.get_width()/2, screen.get_height()/2 + 200), 1, medieval_font, "leaderboard")
@@ -38,9 +37,11 @@ def menu_mainloop(keys, set_name, set_menu, text):
     text_field.draw(screen)
     if (play_button.draw(screen) == 0):
         set_name(text_field.value)
+        play_button.click_delay = -1
         set_menu(2)
     if (lead_button.draw(screen) == 0):
-        set_menu(3)
+        lead_button.click_delay = -1
+        set_menu(1)
 
 def menu_event(event):
 
