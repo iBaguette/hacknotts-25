@@ -117,11 +117,11 @@ class GUI:
 
         # Wave Data
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            f"Wave: {self.wave_count}`",
+            f"Wave: {self.wave_count}",
             True, 
             black)
-        screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 250))
-        screen.blit(text_surface, (self.health_x + 80, self.health_y + 250)) 
+        screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 307))
+        screen.blit(text_surface, (self.health_x + 125, self.health_y + 317)) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
