@@ -1,5 +1,5 @@
 # Example file showing a circle moving on screen
-import pygame, os, time, random
+import pygame, os, time, random, requests
 
 from modules.background import *
 from modules.shop import *
