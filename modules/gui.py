@@ -1,5 +1,6 @@
 import pygame, os, math
 
+from typing import Optional
 from modules.utilities import *
 
 class GUI:
@@ -22,6 +23,7 @@ class GUI:
         self.buttonImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Red_3Slides.png"))
         self.healthImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Banners", "Carved_3Slides.png"))
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
+        self.wave_count: int = 1
 
         # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
@@ -104,6 +106,14 @@ class GUI:
             gold)
         screen.blit(self.buttonImg, ((screen.get_width())-280, 33))
         screen.blit(text_surface, (((screen.get_width())-260, 40))) 
+
+        # Wave Data
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+            f"Wave: {self.wave_count}`",
+            True, 
+            gold)
+        screen.blit(self.buttonImg, ((screen.get_width())/2-280, 600 ))
+        screen.blit(text_surface, (((screen.get_width())/2-260, 600 ))) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
