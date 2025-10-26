@@ -169,7 +169,7 @@ class GUI:
             "10 Coins",
             True, 
             black)
-        screen.blit(text_surface, ((30, 395)))
+        screen.blit(text_surface, ((30, 393)))
 
         # --- price 3
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
