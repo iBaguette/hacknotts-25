@@ -36,8 +36,11 @@ data.append({"name":"None", "score":"0"})
 
 def update_leaderboard():
     global data, sorted_data
-    r = requests.get("https://hn25.ibaguette.com/leaderboard")
-    data = r.json()
+    try:
+        r = requests.get("https://hn25.ibaguette.com/leaderboard")
+        data = r.json()
+    except:
+        pass
     if len(data) < 3:
         data.append({"name":"None", "score":"0"})
         data.append({"name":"None", "score":"0"})

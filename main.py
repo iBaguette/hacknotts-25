@@ -1,5 +1,5 @@
 # Example file showing a circle moving on screen
-import pygame, os, time, random
+import pygame, os, time, random, requests, json
 
 from modules.background import *
 from modules.shop import *
@@ -152,9 +152,11 @@ while running:
         gui.wave_count = 0
         empty_enemy_group()
         
-
-        # TODO: ADD SCORE TO LEADERBOARD
-
+        if (user_name != ""):
+            try:
+                requests.post("https://hn25.ibaguette.com/leaderboard", json={"name":user_name, "score":score})
+            except:
+                pass
 
     pygame.display.flip()
 
