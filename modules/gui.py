@@ -25,6 +25,14 @@ class GUI:
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
         self.wave_count: int = 1
 
+        scaled_factor = 1
+        self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
+        self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
+
+        imgWidth, imgHeight = self.scaledHealthBorder.get_size()
+        self.health_x = (screen.get_width() - imgWidth) // 2
+        self.health_y = (screen.get_height() - imgHeight) // 2
+
         # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
         
@@ -49,8 +57,7 @@ class GUI:
     def draw(self, screen, coins, max_health, health):
 
         # properties of Health Bar
-        health = 100
-        scaled_factor = health / 100
+        scaled_factor = health / max_health
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
         self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
 
@@ -128,24 +135,18 @@ class GUI:
 
         screen.blit(self.scaledCoin, new_Rect.topright)
 
-        imgWidth, imgHeight = self.scaledHealthBorder.get_size()
-        x = (screen.get_width() - imgWidth) // 2
-        y = (screen.get_height() - imgHeight) // 2
-
-
-
-
         # Drawing the health bar onto the window 
         #  --- the red bar should update as the health decays
-        screen.blit(self.scaledHealthBorder, (x, y - 200))
-        screen.blit(self.scaledBar, (x + 20 , y - 200))
+        print(self.health_x)
+        screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
+        screen.blit(self.scaledBar, (self.health_x + 20 , self.health_y - 200))
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
-            str(health) + "% ",
+            str(int((health / max_health) * 100)) + "% ",
             True,
             red
         )
-        screen.blit(text_surface, (x + 22, y - 185)) 
+        screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
         self.clock.tick(60)
 

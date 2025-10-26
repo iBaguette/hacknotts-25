@@ -28,8 +28,6 @@ spawn_enemy_every_frame: int = 60
 
 coin_group = pygame.sprite.Group()
 coins = 1000
-health = 100
-max_health = 100
 
 global wave_hasfinished, wave, wave_framestowait, wave_duration
 wave: int = 0
@@ -64,8 +62,9 @@ def generate_enemy(enemy_type = "goblin"):
     new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
     return new_enemy
 
-def game_mainloop(keys, decrease_health):
+def game_mainloop(keys, health, max_health, decrease_health):
     global wave_hasfinished, wave_framestowait, wave, wave_duration
+
     # Draw background
     background.draw(screen)
     # default multiplier when not in a wave reset moment

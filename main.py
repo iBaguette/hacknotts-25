@@ -53,6 +53,9 @@ starting_coins = 100
 user_name = ""
 score = 0
 
+max_health = 1000
+health = max_health
+
 enable_piercing = False
 
 def set_name(value):
@@ -98,6 +101,7 @@ def generate_enemy(enemy_type = "goblin"):
     return new_enemy
 
 while running:
+
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
@@ -122,7 +126,7 @@ while running:
         menu_mainloop(keys, set_name, set_menu, "Medieval Defence")
 
     elif (menu_state == 2):
-        game_mainloop(keys, decrease_health)
+        game_mainloop(keys, health, max_health, decrease_health)
 
     if (menu_state == 3):
         menu_mainloop(keys, set_name, set_menu, f"You Died :(\nScore: {score}")
