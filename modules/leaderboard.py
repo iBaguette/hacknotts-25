@@ -56,7 +56,7 @@ def lead_mainloop(set_menu):
     background.draw(screen)
 
     title = medieval_font.render(
-            "Leaderboard", 
+            "Global Leaderboard", 
             True, 
             (0, 0, 0),
             None)
