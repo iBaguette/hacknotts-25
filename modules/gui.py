@@ -156,6 +156,37 @@ class GUI:
         )
         screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
+        # Shop prices 
+        # --- price 1
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+            "10 Coins:",
+            True, 
+            black)
+        screen.blit(text_surface, (30, 260))
+
+        # --- price 2
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+            "10 Coins",
+            True, 
+            black)
+        screen.blit(text_surface, ((30, 395)))
+
+        # --- price 3
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+            "20 Coins",
+            True, 
+            black)
+        screen.blit(text_surface, ((30, 310)))
+
+        # --- price 3
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+            "20 Coins",
+            True, 
+            black)
+        screen.blit(text_surface, ((30, 310)))
+
+
+
         self.clock.tick(60)
 
         pass
