@@ -58,7 +58,7 @@ def generate_enemy(enemy_type = "goblin"):
     new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
     return new_enemy
 
-def game_mainloop(keys):
+def game_mainloop(keys, decrease_health):
 
     # Draw background
     background.draw(screen)
@@ -89,6 +89,7 @@ def game_mainloop(keys):
     killing_enemies = pygame.sprite.spritecollide(tower, enemy_group, 0)
     for enemy in killing_enemies:
         enemy.stop_moving()
+        #decrease_health(enemy.)
         # TODO: SOMETIMES TAKE DAMAGE TO TOWER WHILE THEY ARE HERE
 
     # Should there be a new enemy generated?

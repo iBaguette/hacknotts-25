@@ -29,9 +29,6 @@ pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")
 logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
 pygame.display.set_icon(logo)
 
-logo = pygame.image.load(os.path.join("assets", "logo", "hn25logo.png"))
-pygame.display.set_icon(logo)
-
 menu_state = 0
 # 0 = Main Menu
 # 1 = Leaderboard
