@@ -8,7 +8,7 @@ from modules.gui import *
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))# , pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280, 720) , pygame.FULLSCREEN)
 
 # Note: this import is here because the display has to be init'd before enemy is imported,
 # as enemy creates a dictionary using a function requiring opacity with a screen output
@@ -117,6 +117,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
 
         if (menu_state == 0):
             menu_event(event)
