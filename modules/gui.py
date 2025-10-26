@@ -59,7 +59,7 @@ class GUI:
         # properties of Health Bar
         scaled_factor = health / max_health
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
-        self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
+        self.scaledBar = pygame.transform.scale(self.healthBarImg, ((215) * scaled_factor, 50)) # multiply x value by scale factor
 
         def paragraph_split(pg, max_width, x, y, color, fnt):
             words = pg.split(' ')
@@ -83,7 +83,7 @@ class GUI:
         white = (255, 255, 255)
         gold = (255, 215, 0)
         black = (0, 0, 0)
-        red = (255, 0, 0)
+        borderColor = (0, 255, 0)
         paragraph = (
             "The middle ages is a period running from 1066 to 1485 " 
             "and many developments and well-documented history occurred during this time. "     
@@ -138,12 +138,17 @@ class GUI:
         # Drawing the health bar onto the window 
         #  --- the red bar should update as the health decays
         screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
-        screen.blit(self.scaledBar, (self.health_x + 20 , self.health_y - 200))
+        screen.blit(self.scaledBar, (self.health_x + 57 , self.health_y - 200))
+
+        if health < 75 and health > 25:
+            borderColor = (255, 191, 0) # amber
+        elif health <= 25:
+            borderColor = (255, 0, 0) # red
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
             str(int((health / max_health) * 100)) + "% ",
             True,
-            red
+            borderColor
         )
         screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
