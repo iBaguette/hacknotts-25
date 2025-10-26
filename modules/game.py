@@ -12,6 +12,8 @@ from modules.enemy import *
 from modules.coin import *
 
 blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatter.mp3"))
+new_wave = pygame.mixer.Sound(os.path.join("assets", "sounds", "netflix-intro.mp3"))
+new_wave.set_volume(140)
 # blood_splat.play()
 
 pygame.font.init()
@@ -29,11 +31,21 @@ spawn_enemy_every_frame: int = 60
 coin_group = pygame.sprite.Group()
 coins = 1000
 
-global wave_hasfinished, wave, wave_framestowait, wave_duration
-wave: int = 0
+global wave_hasfinished, wave, wave_framestowait, wave_duration, wave_spawn_scale
+
+BASE_WAVE_GAP_FRAMES = 240
+MIN_WAVE_GAP_FRAMES = 120
+BASE_WAVE_DURATION_FRAMES = 720
+MAX_WAVE_DURATION_FRAMES = 1800
+WAVE_DURATION_GROWTH = 1.12
+WAVE_GAP_DECAY = 0.94
+WAVE_SPAWN_SCALE_GROWTH = 1.08
+
+wave: int = gui.wave_count
 wave_hasfinished: bool = True
-wave_framestowait: int = 150
-wave_duration: int = 600
+wave_framestowait: int = BASE_WAVE_GAP_FRAMES
+wave_duration: int = BASE_WAVE_DURATION_FRAMES
+wave_spawn_scale: float = 1.0
 
 enable_piercing = False
 
@@ -63,12 +75,11 @@ def generate_enemy(enemy_type = "goblin"):
     return new_enemy
 
 def game_mainloop(keys, health, max_health, decrease_health, reset_health):
-    global wave_hasfinished, wave_framestowait, wave, wave_duration
+    global wave_hasfinished, wave_framestowait, wave, wave_duration, wave_spawn_scale
 
     # Draw background
     background.draw(screen)
-    # default multiplier when not in a wave reset moment
-    wave_multiplier = 1
+    current_spawn_scale = min(3.5, wave_spawn_scale)
 
     # Draw tower
     tower.draw(screen)
@@ -106,29 +117,42 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         reset_health()
 
     # Should there be a new enemy generated?
-    if wave_hasfinished == True:
-        wave_framestowait -= 1
-        if wave_framestowait == 0:
-            # reset wave 
+    if wave_hasfinished:
+        if wave_framestowait > 0:
+            wave_framestowait -= 1
+        if wave_framestowait == 0 and len(enemy_group) == 0:
             wave += 1
-            wave_multiplier = wave*1.9354
-
-            wave_framestowait = 500 + int(6*(wave*wave_multiplier)/9)
-            wave_hasfinished = False 
-            wave_duration = int(300*wave_multiplier)
+            wave_spawn_scale *= WAVE_SPAWN_SCALE_GROWTH
+            current_spawn_scale = min(3.5, wave_spawn_scale)
+            wave_framestowait = max(
+                MIN_WAVE_GAP_FRAMES,
+                int(BASE_WAVE_GAP_FRAMES * (WAVE_GAP_DECAY ** wave))
+            )
+            wave_hasfinished = False
+            wave_duration = min(
+                MAX_WAVE_DURATION_FRAMES,
+                int(BASE_WAVE_DURATION_FRAMES * (WAVE_DURATION_GROWTH ** (wave - 1)))
+            )
             gui.wave_count = wave
-        
             print(f"Wave pause over, starting wave {wave} which will last {wave_duration} frames. Next gap {wave_framestowait}.")
-
+            new_wave.play()
     else:
-        if get_enemy_type("goblin")["spawn_frame_chance_per10k"] >= (random.randint(1, 10000)*wave_multiplier):
-            generate_enemy(enemy_type="goblin") if random.randint(1,6) < 5 else generate_enemy(enemy_type="goblin_fast")
+        goblin_chance = min(10000, int(get_enemy_type("goblin")["spawn_frame_chance_per10k"] * current_spawn_scale))
+        if random.randint(1, 10000) <= goblin_chance:
+            fast_bias = min(0.25 + 0.05 * wave, 0.7)
+            if random.random() < fast_bias:
+                generate_enemy(enemy_type="goblin_fast")
+            else:
+                generate_enemy(enemy_type="goblin")
 
-        if wave < 5 and randint(1,2) == 1:
-            if get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] >= random.randint(1, 10000)*wave_multiplier:
+        if wave >= 3:
+            knight_generic_chance = min(10000, int(get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.85))
+            if random.randint(1, 10000) <= knight_generic_chance:
                 generate_enemy(enemy_type="knight_generic")
 
-            if get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] >= random.randint(1, 10000)*wave_multiplier:
+        if wave >= 5:
+            knight_golden_chance = min(10000, int(get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.65))
+            if random.randint(1, 10000) <= knight_golden_chance:
                 generate_enemy(enemy_type="knight_golden")
 
     # Draw and Update Sprites Array
@@ -159,7 +183,13 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     # (removed incomplete 'if wave' statement)
     # independent physics.
     # print("tick")
-    wave_duration -= 1
+    if not wave_hasfinished:
+        if wave_duration > 0:
+            wave_duration -= 1
+        if wave_duration <= 0 and len(enemy_group) == 0:
+            wave_duration = 0
+            wave_hasfinished = True
+            print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
     
 
 def game_event(event):

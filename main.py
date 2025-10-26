@@ -36,7 +36,7 @@ blood_splat = pygame.mixer.Sound(os.path.join("assets", "sounds", "blood-splatte
 blood_splat.set_volume(0.1)
 
 background_music = pygame.mixer.Sound(os.path.join("assets", "sounds", "fantasy-adventures-wizard-journey.ogg"))
-background_music.set_volume(0.5)
+background_music.set_volume(0.3)
 background_music.play(loops=999)
 
 background = Background(screen)
