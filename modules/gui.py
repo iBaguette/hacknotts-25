@@ -26,6 +26,8 @@ class GUI:
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
         self.wave_count: int = 1
 
+
+
         scaled_factor = 1
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
         self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
@@ -36,6 +38,7 @@ class GUI:
 
         # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
+        self.scaledbuttonImg = pygame.transform.scale(self.buttonImg, (228, 50))
         
         self.rect = self.scaledCoin.get_rect()
 
@@ -109,11 +112,11 @@ class GUI:
 
         # Coins collected
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            "Gold Collected: " + str(coins),
+            "Coins Collected: " + str(coins),
             True, 
             gold)
-        screen.blit(self.buttonImg, ((screen.get_width())-280, 33))
-        screen.blit(text_surface, (((screen.get_width())-260, 40))) 
+        screen.blit(self.scaledbuttonImg, ((screen.get_width())-315, 33))
+        screen.blit(text_surface, (((screen.get_width())-285, 40))) 
 
         # Wave Data
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
@@ -121,7 +124,7 @@ class GUI:
             True, 
             black)
         screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 307))
-        screen.blit(text_surface, (self.health_x + 125, self.health_y + 317)) 
+        screen.blit(text_surface, (self.health_x + 120, self.health_y + 317)) 
 
         # updating internal time
         self.time_elapsed += self.clock.get_time() / 1000.0
