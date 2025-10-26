@@ -41,11 +41,11 @@ WAVE_DURATION_GROWTH = 1.12
 WAVE_GAP_DECAY = 0.94
 WAVE_SPAWN_SCALE_GROWTH = 1.08
 
-wave: int = gui.wave_count
 wave_hasfinished: bool = True
 wave_framestowait: int = BASE_WAVE_GAP_FRAMES
 wave_duration: int = BASE_WAVE_DURATION_FRAMES
 wave_spawn_scale: float = 1.0
+first_wave_toggle: bool = True
 
 enable_piercing = False
 
@@ -78,7 +78,9 @@ def generate_enemy(enemy_type = "goblin"):
     return new_enemy
 
 def game_mainloop(keys, health, max_health, decrease_health, reset_health):
-    global wave_hasfinished, wave_framestowait, wave, wave_duration, wave_spawn_scale
+    global wave_hasfinished, wave_framestowait, wave_duration, wave_spawn_scale, first_wave_toggle
+
+    wave: int = gui.wave_count
 
     # Draw background
     background.draw(screen)
@@ -124,25 +126,27 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         if wave_framestowait > 0:
             wave_framestowait -= 1
         if wave_framestowait == 0 and len(enemy_group) == 0:
-            wave += 1
+            if first_wave_toggle:
+                first_wave_toggle = False
+            else:
+                gui.wave_count += 1
             wave_spawn_scale *= WAVE_SPAWN_SCALE_GROWTH
             current_spawn_scale = min(3.5, wave_spawn_scale)
             wave_framestowait = max(
                 MIN_WAVE_GAP_FRAMES,
-                int(BASE_WAVE_GAP_FRAMES * (WAVE_GAP_DECAY ** wave))
+                int(BASE_WAVE_GAP_FRAMES * (WAVE_GAP_DECAY ** gui.wave_count))
             )
             wave_hasfinished = False
             wave_duration = min(
                 MAX_WAVE_DURATION_FRAMES,
-                int(BASE_WAVE_DURATION_FRAMES * (WAVE_DURATION_GROWTH ** (wave - 1)))
+                int(BASE_WAVE_DURATION_FRAMES * (WAVE_DURATION_GROWTH ** (gui.wave_count - 1)))
             )
-            gui.wave_count = wave
-            print(f"Wave pause over, starting wave {wave} which will last {wave_duration} frames. Next gap {wave_framestowait}.")
+            print(f"Wave pause over, starting wave {gui.wave_count} which will last {wave_duration} frames. Next gap {wave_framestowait}.")
             new_wave.play()
     else:
         goblin_chance = min(10000, int(get_enemy_type("goblin")["spawn_frame_chance_per10k"] * current_spawn_scale))
         if random.randint(1, 10000) <= goblin_chance:
-            fast_bias = min(0.25 + 0.05 * wave, 0.7)
+            fast_bias = min(0.25 + 0.05 * gui.wave_count, 0.7)
             if random.random() < fast_bias:
                 generate_enemy(enemy_type="goblin_fast")
             else:
