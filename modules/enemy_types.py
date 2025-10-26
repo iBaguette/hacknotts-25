@@ -5,7 +5,7 @@ from modules.utilities import sprite_sheet_slice
 enemy_types = {
     "goblin": {
         "spawn_frame_chance_per10k": 75,
-        "drop_chance": 0.3,
+        "drop_chance": 0.41,
         "gold_drop": 1,
         "damage": 1,
         "speed": 0.8,
@@ -13,7 +13,7 @@ enemy_types = {
     },
     "goblin_fast": {
         "spawn_frame_chance_per10k": 50,
-        "drop_chance": 0.3,
+        "drop_chance": 0.65,
         "gold_drop": 1,
         "damage": 1,
         "speed": 2,
