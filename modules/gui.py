@@ -108,7 +108,7 @@ class GUI:
             f"FPS: {int(self.clock.get_fps())}",
             True, 
             black)
-        screen.blit(text_surface, ((10, screen.get_height() - 35)))
+        screen.blit(text_surface, ((screen.get_width() - 70, screen.get_height() - 35)))
 
         # Coins collected
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
@@ -176,14 +176,14 @@ class GUI:
             "20 Coins",
             True, 
             black)
-        screen.blit(text_surface, ((30, 310)))
+        screen.blit(text_surface, ((30, 526)))
 
-        # --- price 3
+        # --- price 4
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
             "20 Coins",
             True, 
             black)
-        screen.blit(text_surface, ((30, 310)))
+        screen.blit(text_surface, ((30, 659)))
 
 
 
