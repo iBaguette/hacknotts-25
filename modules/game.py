@@ -77,13 +77,18 @@ def remove_coins(value):
 def empty_enemy_group():
     enemy_group.empty()
 
-def generate_enemy(enemy_type = "goblin"):
+def generate_enemy(enemy_type = "goblin", custom_enemy_group: Optional[pygame.sprite.Group] = None) -> Enemy:
     """
     Generate a goblin or knight
     """
     print(f"spawning {enemy_type}")
-    new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
-    return new_enemy
+
+    if (custom_enemy_group is not None):
+        new_enemy = Enemy(custom_enemy_group, enemy_type=enemy_type)
+        return new_enemy
+    else:
+        new_enemy = Enemy(enemy_group, enemy_type=enemy_type)
+        return new_enemy
 
 def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     global wave_hasfinished, wave_framestowait, wave_duration, wave_spawn_scale, first_wave_toggle

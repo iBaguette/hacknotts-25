@@ -62,6 +62,10 @@ class Enemy(pygame.sprite.Sprite):
         self.area = self.screen.get_rect()
         self.id = enemy_counter
 
+        # 29/10/25 - OL. Toggle for tower attack, as we also want meandering enemies on menu
+        self.attack_centre = True
+        self.target_position = pygame.Vector2(self.area.center)
+
         # Health: is alive or is dead
         self.health = 1
 
@@ -76,15 +80,16 @@ class Enemy(pygame.sprite.Sprite):
         # Now draw the sprite
 
         # print(f"Debug [enemy] : Enemy {self.id} spawned at position")
-    
+
         self.image = self.goblin_torch_attack[self.frame]
         self.rect: pygame.Rect = self.image.get_rect()
         self.rect.center = generate_random_positon()
+        self.pos = pygame.Vector2(self.rect.center)
 
         # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
         enemy_counter += 1
-        
+
         self.speed: float = get_enemy_type(enemy_type)["speed"]
 
     def draw(self):
@@ -102,21 +107,40 @@ class Enemy(pygame.sprite.Sprite):
         """
         # Every frame, move a certain number of x and y positions
         # print(f"Debug [enemy] : Updating sprite {self.id}")
-        #pygame.draw.rect(self.screen, "red", self.rect)
+        # pygame.draw.rect(self.screen, "red", self.rect)
 
+        # Generate random movement if not going for centre (i.e. is on the menu)
+
+        # TODO: Change this to not recalculate every frame, as the centre doesn't change!
         centre_pos = pygame.Vector2(self.area.center)
+
+        if not self.attack_centre:
+
+            # Custom logic: the centre here is a random position!
+            direction = self.target_position - self.rect.center
+
+            if direction.length() < 1:
+                self.kill()
+                return
+            velocity = direction.normalize() * ((self.speed)/2)
+
+            self.pos += velocity
+            self.rect.center = (round(self.pos.x), round(self.pos.y))
+            self.draw()
+            return
 
         # direction vector from enemy to centre
         direction = centre_pos - self.rect.center
-        
+
         velocity = direction.normalize() * self.speed
         # print(direction, velocity, self.speed)
 
         # update float position, then update rects for rendering/collisions
-        self.rect.center += velocity
+        # self.rect.center += velocity
+        self.pos += velocity
+        self.rect.center = (round(self.pos.x), round(self.pos.y))
 
         self.draw()
-
 
     def stop_moving(self):
         self.speed = 0
