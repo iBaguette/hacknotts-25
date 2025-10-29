@@ -157,31 +157,31 @@ class GUI:
         screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
         # Shop prices 
-        # --- price 1
+        # --- Tower health/upgrade
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "2 Coins:",
-            True, 
+            "3 Coins:",
+            True,
             black)
         screen.blit(text_surface, (30, 260))
 
-        # --- price 2
+        # --- Bow reload speed
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "2 Coins",
-            True, 
+            "3 Coins",
+            True,
             black)
         screen.blit(text_surface, ((30, 393)))
 
-        # --- price 3
+        # --- Piercing arrow
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "5 Coins",
-            True, 
+            "10 Coins",
+            True,
             black)
         screen.blit(text_surface, ((30, 526)))
 
-        # --- price 4
+        # Health replenish
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "10 Coins",
-            True, 
+            "7 Coins",
+            True,
             black)
         screen.blit(text_surface, ((30, 659)))
 
