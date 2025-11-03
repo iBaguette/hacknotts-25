@@ -146,7 +146,7 @@ class GUI:
 
         if health <= 25:
             borderColor = (255, 0, 0) # red
-        elif health < 75 and health > 25:
+        elif health < 75:
             borderColor = (255, 191, 0) # amber
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
