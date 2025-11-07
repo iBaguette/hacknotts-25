@@ -33,8 +33,10 @@ class GUI:
         self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
 
         imgWidth, imgHeight = self.scaledHealthBorder.get_size()
-        self.health_x = (screen.get_width() - imgWidth) // 2
-        self.health_y = (screen.get_height() - imgHeight) // 2
+        self.screen_width = screen.get_width()
+        self.screen_height = screen.get_height()
+        self.health_x = (self.screen_width - imgWidth) // 2
+        self.health_y = (self.screen_height - imgHeight) // 2
 
         # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
@@ -59,7 +61,9 @@ class GUI:
         pass
 
     def draw(self, screen, coins, max_health, health):
-
+        """
+        Draws all GUI components to the screen. Must be called every frame.
+        """
         # properties of Health Bar
         scaled_factor = health / max_health
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
@@ -108,15 +112,15 @@ class GUI:
             f"FPS: {int(self.clock.get_fps())}",
             True, 
             black)
-        screen.blit(text_surface, ((screen.get_width() - 70, screen.get_height() - 35)))
+        screen.blit(text_surface, (self.screen_width - 70, self.screen_height - 35))
 
         # Coins collected
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            "Coins Collected: " + str(coins),
+            f"Coins Collected: {coins}",
             True, 
             gold)
-        screen.blit(self.scaledbuttonImg, ((screen.get_width())-315, 33))
-        screen.blit(text_surface, (((screen.get_width())-285, 40))) 
+        screen.blit(self.scaledbuttonImg, ((self.screen_width)-315, 33))
+        screen.blit(text_surface, (((self.screen_width)-285, 40))) 
 
         # Wave Data
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
@@ -134,7 +138,7 @@ class GUI:
 
         # new coin position 
         new_Rect = self.scaledCoin.get_rect()
-        new_Rect.topright = (screen.get_width() - 100, 100)
+        new_Rect.topright = (self.screen_width - 100, 100)
         new_Rect.centery = self.base_y + offset 
 
         screen.blit(self.scaledCoin, new_Rect.topright)
@@ -154,7 +158,7 @@ class GUI:
             borderColor = (255, 191, 0) # amber
 
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16).render(
-            str(health_percentage) + "% ",
+            f"{health_percentage}%",
             True,
             borderColor
         )
@@ -170,25 +174,24 @@ class GUI:
 
         # --- Bow reload speed
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "3 Coins",
+            "3 Coins:",
             True,
             black)
-        screen.blit(text_surface, ((30, 393)))
+        screen.blit(text_surface, (30, 393))
 
         # --- Piercing arrow
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "10 Coins",
+            "10 Coins:",
             True,
             black)
-        screen.blit(text_surface, ((30, 526)))
+        screen.blit(text_surface, (30, 526))
 
         # Health replenish
         text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "7 Coins",
+            "7 Coins:",
             True,
             black)
-        screen.blit(text_surface, ((30, 659)))
-
+        screen.blit(text_surface, (30, 659))
 
 
         self.clock.tick(60)
