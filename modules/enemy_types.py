@@ -34,6 +34,15 @@ enemy_types = {
         "damage": 5,
         "speed": 2.3,
         "spritesheet": sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Knights", "Troops", "Warrior", "Yellow", "Warrior_Yellow.png"), horizontal_cells=6, vertical_cells=8)
+    },
+    "dragon": {
+        "spawn_frame_chance_per10k": 0,  # Boss only spawns manually
+        "drop_chance": 1.0,
+        "gold_drop": 100,
+        "damage": 20,
+        "speed": 1.5,
+        "health": 100,  # Much higher health for boss
+        "spritesheet": sprite_sheet_slice(os.path.join("assets", "spritesheets", "Factions", "Knights", "Troops", "Warrior", "Purple", "Warrior_Purple.png"), horizontal_cells=6, vertical_cells=8, scale=(3.0, 3.0))
     }
 }
 

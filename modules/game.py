@@ -25,6 +25,7 @@ def reset_game_state(coin_max):
     global background, tower, gui, shop, first_wave_toggle
     global enemy_group, frame_count, spawn_enemy_every_frame
     global coin_group, coins, enable_piercing, blood_system
+    global boss_spawned, boss_active, camera_zoom, target_camera_zoom
 
     background = Background(screen)
     tower = Tower(screen)
@@ -38,6 +39,12 @@ def reset_game_state(coin_max):
     coins = coin_max
     enable_piercing = False
     first_wave_toggle = True
+    
+    # Reset boss fight variables
+    boss_spawned = False
+    boss_active = False
+    camera_zoom = 1.0
+    target_camera_zoom = 1.0
 
     blood_system.reset()
 
@@ -56,6 +63,12 @@ wave_hasfinished: bool = True
 wave_framestowait: int = BASE_WAVE_GAP_FRAMES
 wave_duration: int = BASE_WAVE_DURATION_FRAMES
 wave_spawn_scale: float = 1.0
+
+# Boss fight variables
+boss_spawned: bool = False
+boss_active: bool = False
+camera_zoom: float = 1.0
+target_camera_zoom: float = 1.0
 
 def upgrade_tower():
     tower.upgrade_tower()
@@ -92,8 +105,20 @@ def generate_enemy(enemy_type = "goblin", custom_enemy_group: Optional[pygame.sp
 
 def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     global wave_hasfinished, wave_framestowait, wave_duration, wave_spawn_scale, first_wave_toggle
+    global boss_spawned, boss_active, camera_zoom, target_camera_zoom
 
     wave: int = gui.wave_count
+
+    # Update camera zoom smoothly
+    if camera_zoom != target_camera_zoom:
+        zoom_speed = 0.02
+        if camera_zoom < target_camera_zoom:
+            camera_zoom = min(camera_zoom + zoom_speed, target_camera_zoom)
+        else:
+            camera_zoom = max(camera_zoom - zoom_speed, target_camera_zoom)
+
+    # Update background based on boss status
+    background.set_boss_mode(boss_active)
 
     # Draw background
     background.draw(screen)
@@ -109,13 +134,25 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
     collided_arrows = pygame.sprite.groupcollide(tower.arrows, enemy_group, 0, 0)
 
     for enemy in collided_enemies:
-        if random.randint(0, 10) <= 5:
-            Coin(coin_group, enemy.rect.center, screen, collect_coin)
+        # Use new take_damage method for enemies
+        is_dead = enemy.take_damage(1)
+        
+        if is_dead:
+            if random.randint(0, 10) <= 5:
+                Coin(coin_group, enemy.rect.center, screen, collect_coin)
 
-        blood_system.spawn(enemy.rect.center, count=(randint(4, 12)))
-        enemy.kill()
-        blood_splat.set_volume(0.4)
-        blood_splat.play()
+            blood_system.spawn(enemy.rect.center, count=(randint(4, 12)))
+            enemy.kill()
+            blood_splat.set_volume(0.4)
+            blood_splat.play()
+            
+            # Check if boss was killed
+            if hasattr(enemy, 'enemy_type') and enemy.enemy_type == "dragon":
+                boss_active = False
+                target_camera_zoom = 1.0  # Zoom back to normal
+        else:
+            # Enemy took damage but didn't die - show blood effect
+            blood_system.spawn(enemy.rect.center, count=(randint(2, 5)))
 
     if (not enable_piercing):
         for arrow in collided_arrows:
@@ -158,29 +195,63 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
             )
             print(f"Wave pause over, starting wave {gui.wave_count} which will last {wave_duration} frames. Next gap {wave_framestowait}.")
             new_wave.play()
+            
+            # Spawn dragon boss at wave 10
+            if gui.wave_count == 10 and not boss_spawned:
+                boss_spawned = True
+                boss_active = True
+                target_camera_zoom = 0.7  # Zoom out to show more of the arena
+                generate_enemy(enemy_type="dragon")
+                print("BOSS FIGHT: Dragon has appeared!")
     else:
-        goblin_chance = min(10000, int(get_enemy_type("goblin")["spawn_frame_chance_per10k"] * current_spawn_scale))
-        if random.randint(1, 10000) <= goblin_chance:
-            fast_bias = min(0.25 + 0.05 * gui.wave_count, 0.7)
-            if random.random() < fast_bias:
-                generate_enemy(enemy_type="goblin_fast")
-            else:
-                generate_enemy(enemy_type="goblin")
+        # Normal enemy spawning (skip if boss is active)
+        if not boss_active:
+            goblin_chance = min(10000, int(get_enemy_type("goblin")["spawn_frame_chance_per10k"] * current_spawn_scale))
+            if random.randint(1, 10000) <= goblin_chance:
+                fast_bias = min(0.25 + 0.05 * gui.wave_count, 0.7)
+                if random.random() < fast_bias:
+                    generate_enemy(enemy_type="goblin_fast")
+                else:
+                    generate_enemy(enemy_type="goblin")
 
-        if wave >= 3:
-            knight_generic_chance = min(10000, int(get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.85))
-            if random.randint(1, 10000) <= knight_generic_chance:
-                generate_enemy(enemy_type="knight_generic")
+            if wave >= 3:
+                knight_generic_chance = min(10000, int(get_enemy_type("knight_generic")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.85))
+                if random.randint(1, 10000) <= knight_generic_chance:
+                    generate_enemy(enemy_type="knight_generic")
 
-        if wave >= 5:
-            knight_golden_chance = min(10000, int(get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.65))
-            if random.randint(1, 10000) <= knight_golden_chance:
-                generate_enemy(enemy_type="knight_golden")
+            if wave >= 5:
+                knight_golden_chance = min(10000, int(get_enemy_type("knight_golden")["spawn_frame_chance_per10k"] * current_spawn_scale * 0.65))
+                if random.randint(1, 10000) <= knight_golden_chance:
+                    generate_enemy(enemy_type="knight_golden")
 
     # Draw and Update Sprites Array
     
     enemy_group.update()
-    enemy_group.draw(screen); 
+    enemy_group.draw(screen)
+    
+    # Draw boss health bar if boss is active
+    if boss_active:
+        for enemy in enemy_group:
+            if hasattr(enemy, 'enemy_type') and enemy.enemy_type == "dragon":
+                # Draw health bar above boss
+                bar_width = 200
+                bar_height = 20
+                bar_x = enemy.rect.centerx - bar_width // 2
+                bar_y = enemy.rect.top - 30
+                
+                # Background (red)
+                pygame.draw.rect(screen, (100, 0, 0), (bar_x, bar_y, bar_width, bar_height))
+                
+                # Health (bright red)
+                health_ratio = enemy.health / enemy.max_health
+                pygame.draw.rect(screen, (255, 0, 0), (bar_x, bar_y, int(bar_width * health_ratio), bar_height))
+                
+                # Border
+                pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, bar_width, bar_height), 2)
+                
+                # Boss name
+                boss_name_surface = my_font.render("DRAGON BOSS", True, (255, 0, 0))
+                screen.blit(boss_name_surface, (bar_x + bar_width // 2 - boss_name_surface.get_width() // 2, bar_y - 25))
 
     coin_group.update(pygame.mouse.get_pos())
     coin_group.draw(screen)
