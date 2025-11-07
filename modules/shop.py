@@ -101,10 +101,11 @@ class Shop:
 
 
     def event(self, event, mouse_pos, coins, remove_coins_function, upgrade_tower, upgrade_archer, upgrade_arrow, upgrade_health):
-
+        has_clicked_shop_icon = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Tower health/upgrade
             if (self.castle_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
+                has_clicked_shop_icon = True
                 if (coins >= 3 and self.castle_level < 3):
                     remove_coins_function(3)
                     self.castle_level += 1
@@ -115,6 +116,7 @@ class Shop:
             
             # Archer reload
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
+                has_clicked_shop_icon = True
                 if (coins >= 3 and self.archer_level < 3):
                     remove_coins_function(3)
                     self.archer_level += 1
@@ -125,6 +127,7 @@ class Shop:
 
             # Piercing arrow 
             if (self.arrow_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
+                has_clicked_shop_icon = True
                 if (coins >= 10 and self.arrow_level < 1):
                     remove_coins_function(10)
                     self.arrow_level = 1
@@ -134,6 +137,7 @@ class Shop:
             
             # Health replenish
             if (self.health_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
+                has_clicked_shop_icon = True
                 if (coins >= 7):
                     remove_coins_function(7)
                     self.health_level = 1
@@ -141,3 +145,5 @@ class Shop:
                     self.health_button_timer = 30
                     upgrade_health()
                     pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
+
+        return has_clicked_shop_icon

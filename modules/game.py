@@ -217,5 +217,6 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
 
 def game_event(event, upgrade_health):
     if (event.type == pygame.MOUSEBUTTONDOWN):
+        # Only shoot if not clicking on shop icon
         if not shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow, upgrade_health):
             tower.start_shoot(pygame.mouse.get_pos())
