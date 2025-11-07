@@ -138,8 +138,13 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         is_dead = enemy.take_damage(1)
         
         if is_dead:
-            if random.randint(0, 10) <= 5:
-                Coin(coin_group, enemy.rect.center, screen, collect_coin)
+            # Drop coins based on enemy type configuration
+            enemy_data = get_enemy_type(enemy.enemy_type)
+            drop_chance = enemy_data.get("drop_chance", 0.5)
+            if random.random() <= drop_chance:
+                gold_amount = enemy_data.get("gold_drop", 1)
+                for _ in range(gold_amount):
+                    Coin(coin_group, enemy.rect.center, screen, collect_coin)
 
             blood_system.spawn(enemy.rect.center, count=(randint(4, 12)))
             enemy.kill()
