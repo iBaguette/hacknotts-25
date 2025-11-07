@@ -3,6 +3,8 @@ import pygame, os, math
 from modules.utilities import *
 from modules.arrow import *
 
+apply_pay_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3"))
+
 class Shop:
 
     def __init__(self):
@@ -11,33 +13,33 @@ class Shop:
         self.button_background = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Blue.png"), 1, 1, (2, 2))[0]
         self.button_pressed = sprite_sheet_slice(os.path.join("assets", "spritesheets", "UI", "Buttons", "Button_Blue_Pressed.png"), 1, 1, (2, 2))[0]
 
+        self.castle_button_type = self.button_background
+        self.archer_button_type = self.button_background
+        self.health_button_type = self.button_background
+
         self.shop_position = (0, 150) # top left of image
         self.button_spacing = self.button_background.get_rect().height + 5 # added to y
 
-        self.castle_button_red = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Buildings", "Red Buildings", "Tower.png"), 1, 1, (0.4, 0.4))[0]
-        self.castle_button_blue = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Buildings", "Blue Buildings", "Tower.png"), 1, 1, (0.4, 0.4))[0]
-        self.castle_button_black = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Buildings", "Black Buildings", "Tower.png"), 1, 1, (0.4, 0.4))[0]
-        self.castle_button_yellow = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Buildings", "Yellow Buildings", "Tower.png"), 1, 1, (0.4, 0.4))[0]
-        self.castle_buttons = [self.castle_button_red, self.castle_button_blue, self.castle_button_black, self.castle_button_yellow]
+        # Load castle and archer spritesheets for buttons
+        self.castle_buttons, self.archer_buttons = [], []
+        for colour in ["Red", "Blue", "Black", "Yellow"]:
+            self.castle_buttons.append(sprite_sheet_slice(os.path.join("assets", "spritesheets", "Buildings", f"{colour} Buildings", "Tower.png"), 1, 1, (0.4, 0.4))[0])
+            self.archer_buttons.append(sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", f"{colour} Units", "Archer", "Archer_Shoot.png"), 8, 1, (0.9, 0.9))[3])
+
         self.castle_button_rect = pygame.Rect(self.shop_position[0], self.shop_position[1] + self.button_spacing * 1,
                                             self.button_background.get_rect().width, self.button_background.get_rect().height)
-        
-        self.castle_button_blit = self.castle_button_red.get_rect()
+
+        self.castle_button_blit = self.castle_buttons[0].get_rect()
         self.castle_button_blit.center = self.castle_button_rect.center
         self.castle_button_blit.centery -= 25
         self.castle_level = 0 # max 3
         self.castle_button_type = self.button_background
         self.castle_button_timer = 0
-
-        self.archer_button_red = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Red Units", "Archer", "Archer_Shoot.png"), 8, 1, (0.9, 0.9))[3]
-        self.archer_button_blue = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Blue Units", "Archer", "Archer_Shoot.png"), 8, 1, (0.9, 0.9))[3]
-        self.archer_button_black = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Black Units", "Archer", "Archer_Shoot.png"), 8, 1, (0.9, 0.9))[3]
-        self.archer_button_yellow = sprite_sheet_slice(os.path.join("assets", "spritesheets", "Units", "Yellow Units", "Archer", "Archer_Shoot.png"), 8, 1, (0.9, 0.9))[3]
-        self.archer_buttons = [self.archer_button_red, self.archer_button_blue, self.archer_button_black, self.archer_button_yellow]
+    
         self.archer_button_rect = pygame.Rect(self.shop_position[0], self.shop_position[1] + self.button_spacing * 2,
                                             self.button_background.get_rect().width, self.button_background.get_rect().height)
-        
-        self.archer_button_blit = self.archer_button_red.get_rect()
+
+        self.archer_button_blit = self.archer_buttons[0].get_rect()
         self.archer_button_blit.center = self.archer_button_rect.center
         self.archer_button_blit.centery -= 25
         self.archer_level = 0 # max 3
@@ -77,10 +79,6 @@ class Shop:
         screen.blit(self.arrow_button, self.arrow_button_blit)
         screen.blit(self.health_button, self.health_button_blit)
 
-        self.castle_button_type = self.button_background
-        self.archer_button_type = self.button_background
-        self.health_button_type = self.button_background
-
         if (self.castle_button_timer > 0):
             self.castle_button_timer -= 1
             self.castle_button_type = self.button_pressed
@@ -112,7 +110,7 @@ class Shop:
                     self.castle_button_type = self.button_pressed
                     self.castle_button_timer = 30
                     upgrade_tower()
-                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
+                    apply_pay_sound.play()
             
             # Archer reload
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -123,7 +121,7 @@ class Shop:
                     self.archer_button_type = self.button_pressed
                     self.archer_button_timer = 30
                     upgrade_archer()
-                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
+                    apply_pay_sound.play()
 
             # Piercing arrow 
             if (self.arrow_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -133,8 +131,8 @@ class Shop:
                     self.arrow_level = 1
                     self.arrow_button_type = self.button_pressed
                     upgrade_arrow()
-                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
-            
+                    apply_pay_sound.play()
+
             # Health replenish
             if (self.health_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
                 has_clicked_shop_icon = True
@@ -144,6 +142,6 @@ class Shop:
                     self.health_button_type = self.button_pressed
                     self.health_button_timer = 30
                     upgrade_health()
-                    pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3")).play()
+                    apply_pay_sound.play()
 
         return has_clicked_shop_icon
