@@ -66,16 +66,25 @@ class Enemy(pygame.sprite.Sprite):
         self.attack_centre = True
         self.target_position = pygame.Vector2(self.area.center)
 
+        # Store enemy type for reference
+        self.enemy_type = enemy_type
+
         # Health: is alive or is dead
-        self.health = 1
+        enemy_data = get_enemy_type(enemy_type)
+        self.health = enemy_data.get("health", 1)
+        self.max_health = self.health
+        
+        # Cache coin drop data for performance
+        self.drop_chance = enemy_data.get("drop_chance", 0.5)
+        self.gold_drop = enemy_data.get("gold_drop", 1)
 
         # Load necessary images
-        self.goblin_torch_attack = get_enemy_type(enemy_type)["spritesheet"]
+        self.goblin_torch_attack = enemy_data["spritesheet"]
         self.frame = 0
         self.max_frame = len(self.goblin_torch_attack) - 1
         self.frame_speed = 0
         self.frame_speed_max = 9
-        self.damage = get_enemy_type(enemy_type)["damage"]
+        self.damage = enemy_data["damage"]
 
         # Now draw the sprite
 
@@ -90,7 +99,14 @@ class Enemy(pygame.sprite.Sprite):
 
         enemy_counter += 1
 
-        self.speed: float = get_enemy_type(enemy_type)["speed"]
+        self.speed: float = enemy_data["speed"]
+        
+        # Special movement for dragon boss
+        self.is_boss = (enemy_type == "dragon")
+        if self.is_boss:
+            self.orbit_angle = 0.0
+            self.orbit_radius = 400  # Distance from center to orbit
+            self.orbit_speed = 0.02  # Radians per frame
 
     def draw(self):
 
@@ -129,6 +145,37 @@ class Enemy(pygame.sprite.Sprite):
             self.draw()
             return
 
+        # Special behavior for dragon boss - orbit around center
+        if self.is_boss:
+            # Move to orbit radius first if too far or too close
+            distance_to_center = (centre_pos - pygame.Vector2(self.rect.center)).length()
+            
+            if distance_to_center > self.orbit_radius + 50:
+                # Move toward orbit radius
+                direction = centre_pos - self.rect.center
+                velocity = direction.normalize() * self.speed
+                self.pos += velocity
+            elif distance_to_center < self.orbit_radius - 50:
+                # Move away from center
+                direction = self.rect.center - centre_pos
+                velocity = direction.normalize() * self.speed
+                self.pos += velocity
+            else:
+                # Orbit around the center
+                self.orbit_angle += self.orbit_speed
+                target_x = centre_pos.x + math.cos(self.orbit_angle) * self.orbit_radius
+                target_y = centre_pos.y + math.sin(self.orbit_angle) * self.orbit_radius
+                target_pos = pygame.Vector2(target_x, target_y)
+                
+                direction = target_pos - self.rect.center
+                if direction.length() > 0:
+                    velocity = direction.normalize() * self.speed
+                    self.pos += velocity
+            
+            self.rect.center = (round(self.pos.x), round(self.pos.y))
+            self.draw()
+            return
+
         # direction vector from enemy to centre
         direction = centre_pos - self.rect.center
 
@@ -144,3 +191,10 @@ class Enemy(pygame.sprite.Sprite):
 
     def stop_moving(self):
         self.speed = 0
+
+    def take_damage(self, damage=1):
+        """
+        Reduce enemy health by damage amount. Returns True if enemy dies.
+        """
+        self.health -= damage
+        return self.health <= 0
