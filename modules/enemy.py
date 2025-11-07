@@ -73,6 +73,10 @@ class Enemy(pygame.sprite.Sprite):
         enemy_data = get_enemy_type(enemy_type)
         self.health = enemy_data.get("health", 1)
         self.max_health = self.health
+        
+        # Cache coin drop data for performance
+        self.drop_chance = enemy_data.get("drop_chance", 0.5)
+        self.gold_drop = enemy_data.get("gold_drop", 1)
 
         # Load necessary images
         self.goblin_torch_attack = enemy_data["spritesheet"]
