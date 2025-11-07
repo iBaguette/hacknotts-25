@@ -25,8 +25,10 @@ class GUI:
         self.healthImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Banners", "Carved_3Slides.png"))
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
         self.wave_count: int = 1
-
-
+        # Size 20 impact font for basic GUI text
+        self.font_basic_impact: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20)
+        self.font_health: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16)
+        self.font_default: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22)
 
         scaled_factor = 1
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
@@ -108,14 +110,14 @@ class GUI:
         paragraph_split(paragraph2, 500, 0, 50, black, font)
 
         # FPS info
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+        text_surface = self.font_basic_impact.render(
             f"FPS: {int(self.clock.get_fps())}",
             True, 
             black)
         screen.blit(text_surface, (self.screen_width - 70, self.screen_height - 35))
 
         # Coins collected
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+        text_surface = self.font_basic_impact.render(
             f"Coins Collected: {coins}",
             True, 
             gold)
@@ -123,7 +125,7 @@ class GUI:
         screen.blit(text_surface, (((self.screen_width)-285, 40))) 
 
         # Wave Data
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+        text_surface = self.font_basic_impact.render(
             f"Wave: {self.wave_count}",
             True, 
             black)
@@ -157,7 +159,7 @@ class GUI:
             # print("[07-fix] Setting healthbar to amber")
             borderColor = (255, 191, 0) # amber
 
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16).render(
+        text_surface = self.font_health.render(
             f"{health_percentage}%",
             True,
             borderColor
@@ -166,28 +168,28 @@ class GUI:
 
         # Shop prices 
         # --- Tower health/upgrade
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+        text_surface = self.font_default.render(
             "3 Coins:",
             True,
             black)
         screen.blit(text_surface, (30, 260))
 
         # --- Bow reload speed
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+        text_surface = self.font_default.render(
             "3 Coins:",
             True,
             black)
         screen.blit(text_surface, (30, 393))
 
         # --- Piercing arrow
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+        text_surface = self.font_default.render(
             "10 Coins:",
             True,
             black)
         screen.blit(text_surface, (30, 526))
 
         # Health replenish
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+        text_surface = self.font_default.render(
             "7 Coins:",
             True,
             black)
