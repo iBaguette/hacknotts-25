@@ -86,11 +86,15 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = generate_random_positon()
         self.pos = pygame.Vector2(self.rect.center)
 
+        self.speed: float = get_enemy_type(enemy_type)["speed"]
+
+        self.centre_pos: pygame.Vector2 = pygame.Vector2(self.area.center)
+        self.direction: pygame.Vector2 = self.centre_pos - self.rect.center
+        self.velocity: pygame.Vector2 = self.direction.normalize() * self.speed
+
         # pygame.draw.circle(surface=screen, color="red", center=self.coord_position, radius=20)
 
         enemy_counter += 1
-
-        self.speed: float = get_enemy_type(enemy_type)["speed"]
 
     def draw(self):
 
@@ -109,11 +113,8 @@ class Enemy(pygame.sprite.Sprite):
         # print(f"Debug [enemy] : Updating sprite {self.id}")
         # pygame.draw.rect(self.screen, "red", self.rect)
 
-        # Generate random movement if not going for centre (i.e. is on the menu)
-
-        # TODO: Change this to not recalculate every frame, as the centre doesn't change!
-        centre_pos = pygame.Vector2(self.area.center)
-
+        # Case to generate "random" movement if not going for centre (i.e. is on the menu)
+        # This doesn't include optimisations as it is not game loop
         if not self.attack_centre:
 
             # Custom logic: the centre here is a random position!
@@ -130,17 +131,18 @@ class Enemy(pygame.sprite.Sprite):
             return
 
         # direction vector from enemy to centre
-        direction = centre_pos - self.rect.center
 
-        velocity = direction.normalize() * self.speed
         # print(direction, velocity, self.speed)
 
         # update float position, then update rects for rendering/collisions
         # self.rect.center += velocity
-        self.pos += velocity
+        self.pos += self.velocity
         self.rect.center = (round(self.pos.x), round(self.pos.y))
 
         self.draw()
 
     def stop_moving(self):
         self.speed = 0
+
+        # Required to stop movement immediately
+        self.velocity = pygame.Vector2(0, 0)
