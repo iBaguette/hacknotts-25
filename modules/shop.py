@@ -64,8 +64,12 @@ class Shop:
         self.health_button_blit.center = self.health_button_rect.center
         self.health_button_blit.centery -= 25
         self.health_level = 0
-        self.health_button_type = self.button_background
         self.health_button_timer = 0
+
+    def safe_get_next_level(self, current_level):
+        if current_level + 1 < len(self.castle_buttons):
+            return current_level + 1
+        return current_level
 
     def draw(self, screen):
         screen.blit(self.shop_icon, self.shop_position)
@@ -74,22 +78,29 @@ class Shop:
         screen.blit(self.arrow_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 3))
         screen.blit(self.health_button_type, (self.shop_position[0], self.shop_position[1] + self.button_spacing * 4))
 
-        screen.blit(self.castle_buttons[self.castle_level], self.castle_button_blit)
-        screen.blit(self.archer_buttons[self.archer_level], self.archer_button_blit)
+        screen.blit(self.castle_buttons[self.safe_get_next_level(self.castle_level)], self.castle_button_blit)
+        screen.blit(self.archer_buttons[self.safe_get_next_level(self.archer_level)], self.archer_button_blit)
         screen.blit(self.arrow_button, self.arrow_button_blit)
         screen.blit(self.health_button, self.health_button_blit)
 
         if (self.castle_button_timer > 0):
             self.castle_button_timer -= 1
             self.castle_button_type = self.button_pressed
+            if (self.castle_button_timer == 0):
+                self.castle_button_type = self.button_background
 
         if (self.archer_button_timer > 0):
             self.archer_button_timer -= 1
             self.archer_button_type = self.button_pressed
+            if (self.archer_button_timer == 0):
+                self.archer_button_type = self.button_background
 
         if (self.health_button_timer > 0):
             self.health_button_timer -= 1
+            print(f"[shop] health button timer: {self.health_button_timer}")
             self.health_button_type = self.button_pressed
+            if (self.health_button_timer == 0):
+                self.health_button_type = self.button_background
 
         if (self.castle_level == 3):
             self.castle_button_type = self.button_pressed
