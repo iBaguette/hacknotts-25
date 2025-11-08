@@ -4,7 +4,6 @@ from typing import Optional
 from modules.utilities import *
 
 class GUI:
-
     def __init__(self, screen):
         
         # This function is called once at the start of the program
@@ -25,16 +24,21 @@ class GUI:
         self.healthImg = pygame.image.load(os.path.join("assets", "spritesheets", "UI", "Banners", "Carved_3Slides.png"))
         self.healthBarImg = pygame.image.load(os.path.join("assets", "images", "healthBar.png"))
         self.wave_count: int = 1
-
-
+        # Size 20 impact font for basic GUI text
+        self.font_basic_impact: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20)
+        self.font_health: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16)
+        self.font_default: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22)
+        self.font_paragraph = pygame.font.SysFont("Calibri", 14, italic = True)
 
         scaled_factor = 1
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
         self.scaledBar = pygame.transform.scale(self.healthBarImg, ((308) * scaled_factor, 50))
 
         imgWidth, imgHeight = self.scaledHealthBorder.get_size()
-        self.health_x = (screen.get_width() - imgWidth) // 2
-        self.health_y = (screen.get_height() - imgHeight) // 2
+        self.screen_width = screen.get_width()
+        self.screen_height = screen.get_height()
+        self.health_x = (self.screen_width - imgWidth) // 2
+        self.health_y = (self.screen_height - imgHeight) // 2
 
         # properties of coin /coin animation
         self.scaledCoin = pygame.transform.scale(self.coinsImage, (100, 100))
@@ -56,73 +60,76 @@ class GUI:
         self.clock = pygame.time.Clock()
         self.time_elapsed = 0
 
-        pass
+        self.white = (255, 255, 255)
+        self.gold = (255, 215, 0)
+        self.black = (0, 0, 0)
+        self.borderColor = (0, 255, 0)
 
-    def draw(self, screen, coins, max_health, health):
 
-        # properties of Health Bar
-        scaled_factor = health / max_health
-        self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
-        self.scaledBar = pygame.transform.scale(self.healthBarImg, ((215) * scaled_factor, 50)) # multiply x value by scale factor
-
-        def paragraph_split(pg, max_width, x, y, color, fnt):
-            words = pg.split(' ')
-            lines = [] 
-            current_line = ""
-            for word in words: 
-                test_line = current_line + word + " " 
-                if fnt.size(test_line)[0] < max_width:
-                    current_line = test_line 
-                else:
-                    lines.append(current_line)
-                    current_line = word + " "
-            lines.append(current_line)
-
-            for i, line in enumerate(lines):
-                text_surface = fnt.render(line, True, color)
-                screen.blit(text_surface, (x + 20, y + i * font.get_linesize() + 20))
-
-        white = (255, 255, 255)
-        gold = (255, 215, 0)
-        black = (0, 0, 0)
-        borderColor = (0, 255, 0)
-
-        font = pygame.font.SysFont("Calibri", 14, italic = True)
-        paragraph = (
+        self.paragraph = (
             "The middle ages is a period running from 1066 to 1485 " 
             "and many developments and well-documented history occurred during this time. "     
         )
 
-        paragraph2 = (
+        self.paragraph2 = (
             "It started in the Battle of Hastings (1066), where King Harold II was "
             "(disputedly) shot with an arrow in the eye as documented in the Bayeux Tapestry "
             "and ended during the Battle of Bosworth and the conclusion of the Wars of the "
             "Roses. What does this have to do with a hackathon?"
         )
 
-        paragraph_split(paragraph, 500, 0, 0, black, font)
-        paragraph_split(paragraph2, 500, 0, 50, black, font)
+        pass
+
+    def paragraph_split(self, screen, pg, max_width, x, y, color, fnt):
+        words = pg.split(' ')
+        lines = [] 
+        current_line = ""
+        for word in words: 
+            test_line = current_line + word + " " 
+            if fnt.size(test_line)[0] < max_width:
+                current_line = test_line 
+            else:
+                lines.append(current_line)
+                current_line = word + " "
+        lines.append(current_line)
+
+        for i, line in enumerate(lines):
+            text_surface = fnt.render(line, True, color)
+            screen.blit(text_surface, (x + 20, y + i * self.font_paragraph.get_linesize() + 20))
+
+    def draw(self, screen, coins, max_health, health):
+        """
+        Draws all GUI components to the screen. Must be called every frame.
+        """
+        # properties of Health Bar
+        scaled_factor = health / max_health
+        self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
+        self.scaledBar = pygame.transform.scale(self.healthBarImg, ((215) * scaled_factor, 50)) # multiply x value by scale factor
+
+
+        self.paragraph_split(screen, self.paragraph, 500, 0, 0, self.black, self.font_paragraph)
+        self.paragraph_split(screen, self.paragraph2, 500, 0, 50, self.black, self.font_paragraph)
 
         # FPS info
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+        text_surface = self.font_basic_impact.render(
             f"FPS: {int(self.clock.get_fps())}",
             True, 
-            black)
-        screen.blit(text_surface, ((screen.get_width() - 70, screen.get_height() - 35)))
+            self.black)
+        screen.blit(text_surface, (self.screen_width - 70, self.screen_height - 35))
 
         # Coins collected
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
-            "Coins Collected: " + str(coins),
+        text_surface = self.font_basic_impact.render(
+            f"Coins Collected: {coins}",
             True, 
-            gold)
-        screen.blit(self.scaledbuttonImg, ((screen.get_width())-315, 33))
-        screen.blit(text_surface, (((screen.get_width())-285, 40))) 
+            self.gold)
+        screen.blit(self.scaledbuttonImg, ((self.screen_width)-315, 33))
+        screen.blit(text_surface, (((self.screen_width)-285, 40))) 
 
         # Wave Data
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20).render(
+        text_surface = self.font_basic_impact.render(
             f"Wave: {self.wave_count}",
             True, 
-            black)
+            self.black)
         screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 307))
         screen.blit(text_surface, (self.health_x + 120, self.health_y + 317)) 
 
@@ -134,7 +141,7 @@ class GUI:
 
         # new coin position 
         new_Rect = self.scaledCoin.get_rect()
-        new_Rect.topright = (screen.get_width() - 100, 100)
+        new_Rect.topright = (self.screen_width - 100, 100)
         new_Rect.centery = self.base_y + offset 
 
         screen.blit(self.scaledCoin, new_Rect.topright)
@@ -144,47 +151,52 @@ class GUI:
         screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
         screen.blit(self.scaledBar, (self.health_x + 57, self.health_y - 200))
 
-        if health <= 25:
-            borderColor = (255, 0, 0) # red
-        elif health < 75:
-            borderColor = (255, 191, 0) # amber
+        # print(f"[07-fix] Health: {health} / {max_health} ({(health / max_health) * 100}%)")
+        health_percentage: int = round(health / max_health * 100)
+        if health_percentage < 25:
+            # print("[07-fix] Setting healthbar to red")
+            self.borderColor = (255, 0, 0) # red
+        elif health_percentage < 75:
+            # print("[07-fix] Setting healthbar to amber")
+            self.borderColor = (255, 191, 0) # amber
+        else:
+            self.borderColor = (0, 255, 0) # green
 
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
-            str(int((health / max_health) * 100)) + "% ",
+        text_surface = self.font_health.render(
+            f"{health_percentage}%",
             True,
-            borderColor
+            self.borderColor
         )
         screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
         # Shop prices 
         # --- Tower health/upgrade
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
+        text_surface = self.font_default.render(
             "3 Coins:",
             True,
-            black)
+            self.black)
         screen.blit(text_surface, (30, 260))
 
         # --- Bow reload speed
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "3 Coins",
+        text_surface = self.font_default.render(
+            "3 Coins:",
             True,
-            black)
-        screen.blit(text_surface, ((30, 393)))
+            self.black)
+        screen.blit(text_surface, (30, 393))
 
         # --- Piercing arrow
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "10 Coins",
+        text_surface = self.font_default.render(
+            "10 Coins:",
             True,
-            black)
-        screen.blit(text_surface, ((30, 526)))
+            self.black)
+        screen.blit(text_surface, (30, 526))
 
         # Health replenish
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22).render(
-            "7 Coins",
+        text_surface = self.font_default.render(
+            "7 Coins:",
             True,
-            black)
-        screen.blit(text_surface, ((30, 659)))
-
+            self.black)
+        screen.blit(text_surface, (30, 659))
 
 
         self.clock.tick(60)

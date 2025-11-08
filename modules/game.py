@@ -134,7 +134,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
 
     if wave_duration == 0:
         wave_hasfinished = True
-        print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
+        # print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
 
     # Should there be a new enemy generated?
     if wave_hasfinished:
@@ -196,7 +196,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
             True,
             (0, 0, 0),
             None)
-        screen.blit(text_surface, (((screen.get_width()/2)-250, (screen.get_height()/2)-250)))
+        screen.blit(text_surface, (((gui.screen_width/2)-250, (gui.screen_height/2)-250)))
 
     elif keys[pygame.K_ESCAPE]:
         running = False
@@ -211,11 +211,12 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         if wave_duration <= 0 and len(enemy_group) == 0:
             wave_duration = 0
             wave_hasfinished = True
-            print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
+            # print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
 
     return empty_enemy_group
 
 def game_event(event, upgrade_health):
     if (event.type == pygame.MOUSEBUTTONDOWN):
-        tower.start_shoot(pygame.mouse.get_pos())
-        shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow, upgrade_health)
+        # Only shoot if not clicking on shop icon
+        if not shop.event(event, pygame.mouse.get_pos(), coins, remove_coins, upgrade_tower, tower.upgrade_archer, upgrade_arrow, upgrade_health):
+            tower.start_shoot(pygame.mouse.get_pos())
