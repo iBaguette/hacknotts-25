@@ -4,7 +4,6 @@ from typing import Optional
 from modules.utilities import *
 
 class GUI:
-
     def __init__(self, screen):
         
         # This function is called once at the start of the program
@@ -29,6 +28,7 @@ class GUI:
         self.font_basic_impact: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 20)
         self.font_health: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16)
         self.font_default: pygame.font.Font = pygame.font.Font(os.path.join("assets", "fonts", "Ancient Medium.ttf"), 22)
+        self.font_paragraph = pygame.font.SysFont("Calibri", 14, italic = True)
 
         scaled_factor = 1
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
@@ -60,7 +60,42 @@ class GUI:
         self.clock = pygame.time.Clock()
         self.time_elapsed = 0
 
+        self.white = (255, 255, 255)
+        self.gold = (255, 215, 0)
+        self.black = (0, 0, 0)
+        self.borderColor = (0, 255, 0)
+
+
+        self.paragraph = (
+            "The middle ages is a period running from 1066 to 1485 " 
+            "and many developments and well-documented history occurred during this time. "     
+        )
+
+        self.paragraph2 = (
+            "It started in the Battle of Hastings (1066), where King Harold II was "
+            "(disputedly) shot with an arrow in the eye as documented in the Bayeux Tapestry "
+            "and ended during the Battle of Bosworth and the conclusion of the Wars of the "
+            "Roses. What does this have to do with a hackathon?"
+        )
+
         pass
+
+    def paragraph_split(self, screen, pg, max_width, x, y, color, fnt):
+        words = pg.split(' ')
+        lines = [] 
+        current_line = ""
+        for word in words: 
+            test_line = current_line + word + " " 
+            if fnt.size(test_line)[0] < max_width:
+                current_line = test_line 
+            else:
+                lines.append(current_line)
+                current_line = word + " "
+        lines.append(current_line)
+
+        for i, line in enumerate(lines):
+            text_surface = fnt.render(line, True, color)
+            screen.blit(text_surface, (x + 20, y + i * self.font_paragraph.get_linesize() + 20))
 
     def draw(self, screen, coins, max_health, health):
         """
@@ -71,56 +106,22 @@ class GUI:
         self.scaledHealthBorder = pygame.transform.scale(self.healthImg, (300, 50))
         self.scaledBar = pygame.transform.scale(self.healthBarImg, ((215) * scaled_factor, 50)) # multiply x value by scale factor
 
-        def paragraph_split(pg, max_width, x, y, color, fnt):
-            words = pg.split(' ')
-            lines = [] 
-            current_line = ""
-            for word in words: 
-                test_line = current_line + word + " " 
-                if fnt.size(test_line)[0] < max_width:
-                    current_line = test_line 
-                else:
-                    lines.append(current_line)
-                    current_line = word + " "
-            lines.append(current_line)
 
-            for i, line in enumerate(lines):
-                text_surface = fnt.render(line, True, color)
-                screen.blit(text_surface, (x + 20, y + i * font.get_linesize() + 20))
-
-        white = (255, 255, 255)
-        gold = (255, 215, 0)
-        black = (0, 0, 0)
-        borderColor = (0, 255, 0)
-
-        font = pygame.font.SysFont("Calibri", 14, italic = True)
-        paragraph = (
-            "The middle ages is a period running from 1066 to 1485 " 
-            "and many developments and well-documented history occurred during this time. "     
-        )
-
-        paragraph2 = (
-            "It started in the Battle of Hastings (1066), where King Harold II was "
-            "(disputedly) shot with an arrow in the eye as documented in the Bayeux Tapestry "
-            "and ended during the Battle of Bosworth and the conclusion of the Wars of the "
-            "Roses. What does this have to do with a hackathon?"
-        )
-
-        paragraph_split(paragraph, 500, 0, 0, black, font)
-        paragraph_split(paragraph2, 500, 0, 50, black, font)
+        self.paragraph_split(screen, self.paragraph, 500, 0, 0, self.black, self.font_paragraph)
+        self.paragraph_split(screen, self.paragraph2, 500, 0, 50, self.black, self.font_paragraph)
 
         # FPS info
         text_surface = self.font_basic_impact.render(
             f"FPS: {int(self.clock.get_fps())}",
             True, 
-            black)
+            self.black)
         screen.blit(text_surface, (self.screen_width - 70, self.screen_height - 35))
 
         # Coins collected
         text_surface = self.font_basic_impact.render(
             f"Coins Collected: {coins}",
             True, 
-            gold)
+            self.gold)
         screen.blit(self.scaledbuttonImg, ((self.screen_width)-315, 33))
         screen.blit(text_surface, (((self.screen_width)-285, 40))) 
 
@@ -128,7 +129,7 @@ class GUI:
         text_surface = self.font_basic_impact.render(
             f"Wave: {self.wave_count}",
             True, 
-            black)
+            self.black)
         screen.blit(self.button2Img, (self.health_x + 57, self.health_y + 307))
         screen.blit(text_surface, (self.health_x + 120, self.health_y + 317)) 
 
@@ -154,15 +155,17 @@ class GUI:
         health_percentage: int = round(health / max_health * 100)
         if health_percentage < 25:
             # print("[07-fix] Setting healthbar to red")
-            borderColor = (255, 0, 0) # red
+            self.borderColor = (255, 0, 0) # red
         elif health_percentage < 75:
             # print("[07-fix] Setting healthbar to amber")
-            borderColor = (255, 191, 0) # amber
+            self.borderColor = (255, 191, 0) # amber
+        else:
+            self.borderColor = (0, 255, 0) # green
 
         text_surface = self.font_health.render(
             f"{health_percentage}%",
             True,
-            borderColor
+            self.borderColor
         )
         screen.blit(text_surface, (self.health_x + 22, self.health_y - 185)) 
 
@@ -171,28 +174,28 @@ class GUI:
         text_surface = self.font_default.render(
             "3 Coins:",
             True,
-            black)
+            self.black)
         screen.blit(text_surface, (30, 260))
 
         # --- Bow reload speed
         text_surface = self.font_default.render(
             "3 Coins:",
             True,
-            black)
+            self.black)
         screen.blit(text_surface, (30, 393))
 
         # --- Piercing arrow
         text_surface = self.font_default.render(
             "10 Coins:",
             True,
-            black)
+            self.black)
         screen.blit(text_surface, (30, 526))
 
         # Health replenish
         text_surface = self.font_default.render(
             "7 Coins:",
             True,
-            black)
+            self.black)
         screen.blit(text_surface, (30, 659))
 
 
