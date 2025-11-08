@@ -134,7 +134,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
 
     if wave_duration == 0:
         wave_hasfinished = True
-        print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
+        # print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
 
     # Should there be a new enemy generated?
     if wave_hasfinished:
@@ -211,7 +211,7 @@ def game_mainloop(keys, health, max_health, decrease_health, reset_health):
         if wave_duration <= 0 and len(enemy_group) == 0:
             wave_duration = 0
             wave_hasfinished = True
-            print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
+            # print(f"Wave {wave} over, starting wait of {wave_framestowait} frames...")
 
     return empty_enemy_group
 
