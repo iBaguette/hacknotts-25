@@ -3,7 +3,7 @@ import pygame, os, math
 from modules.utilities import *
 from modules.arrow import *
 
-apply_pay_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3"))
+apple_pay_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "apple-pay-sound.mp3"))
 
 class Shop:
 
