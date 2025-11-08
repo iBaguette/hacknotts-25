@@ -110,7 +110,7 @@ class Shop:
                     self.castle_button_type = self.button_pressed
                     self.castle_button_timer = 30
                     upgrade_tower()
-                    apply_pay_sound.play()
+                    apple_pay_sound.play()
             
             # Archer reload
             if (self.archer_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -121,7 +121,7 @@ class Shop:
                     self.archer_button_type = self.button_pressed
                     self.archer_button_timer = 30
                     upgrade_archer()
-                    apply_pay_sound.play()
+                    apple_pay_sound.play()
 
             # Piercing arrow 
             if (self.arrow_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -131,7 +131,7 @@ class Shop:
                     self.arrow_level = 1
                     self.arrow_button_type = self.button_pressed
                     upgrade_arrow()
-                    apply_pay_sound.play()
+                    apple_pay_sound.play()
 
             # Health replenish
             if (self.health_button_rect.collidepoint(mouse_pos[0], mouse_pos[1])):
@@ -142,6 +142,6 @@ class Shop:
                     self.health_button_type = self.button_pressed
                     self.health_button_timer = 30
                     upgrade_health()
-                    apply_pay_sound.play()
+                    apple_pay_sound.play()
 
         return has_clicked_shop_icon
