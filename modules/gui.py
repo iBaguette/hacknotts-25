@@ -144,13 +144,17 @@ class GUI:
         screen.blit(self.scaledHealthBorder, (self.health_x, self.health_y - 200))
         screen.blit(self.scaledBar, (self.health_x + 57, self.health_y - 200))
 
-        if health <= 25:
+        # print(f"[07-fix] Health: {health} / {max_health} ({(health / max_health) * 100}%)")
+        health_percentage: int = round(health / max_health * 100)
+        if health_percentage < 25:
+            # print("[07-fix] Setting healthbar to red")
             borderColor = (255, 0, 0) # red
-        elif health < 75:
+        elif health_percentage < 75:
+            # print("[07-fix] Setting healthbar to amber")
             borderColor = (255, 191, 0) # amber
 
-        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 14).render(
-            str(int((health / max_health) * 100)) + "% ",
+        text_surface = pygame.font.Font(os.path.join("assets", "fonts", "impact.ttf"), 16).render(
+            str(health_percentage) + "% ",
             True,
             borderColor
         )
