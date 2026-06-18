@@ -1,6 +1,8 @@
 # Example file showing a circle moving on screen
 import pygame, os, time, random, requests, json
 
+pygame.mixer.init()
+
 from modules.background import *
 from modules.shop import *
 from modules.tower import *
@@ -21,8 +23,6 @@ from modules.leaderboard import *
 clock = pygame.time.Clock()
 running = True
 dt = 0
-
-pygame.mixer.init()
 
 centre_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 pygame.display.set_caption(title="Medieval Fantasy Tower Defense: Team 67")

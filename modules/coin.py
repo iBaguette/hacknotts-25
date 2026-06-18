@@ -7,13 +7,17 @@ coins_cashin = pygame.mixer.Sound(os.path.join("assets", "sounds", "coins.mp3"))
 coins_cashin.set_volume(300)
 coins_cashin.play()
 
+# Since a new coin is created often, it is best to not load it during 
+# object creation. Store it here in-memory.
+coins_sprite: pygame.Surface = sprite_sheet_slice(os.path.join("assets", "images", "coin1.png"), 1, 1, (0.06, 0.06))[0]
+
 class Coin(pygame.sprite.Sprite):
 
     def __init__(self, group, position, screen, end_function):
         pygame.sprite.Sprite.__init__(self, group)
 
         # Load necessary images
-        self.image = sprite_sheet_slice(os.path.join("assets", "images", "coin1.png"), 1, 1, (0.06, 0.06))[0]
+        self.image = coins_sprite
         self.rect = self.image.get_rect()
         self.rect.center = position
 
